@@ -1,6 +1,7 @@
 import { useRef, useState, useEffect } from "react";
 import { faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 const USERNAME_REGEX = /^[a-zA-Z0-9-_]{3,21}$/;
@@ -33,7 +34,8 @@ const Register = () => {
     const [success, setSuccess] = useState(false);
 
     useEffect(() => {
-        usernameInputRef.current.focus();
+        if (usernameInputRef.current !== undefined)
+            usernameInputRef.current.focus();
     }, [])
 
     useEffect(() => {
@@ -70,19 +72,18 @@ const Register = () => {
             console.log(response?.accessToken);
             console.log(JSON.stringify(response))
             setSuccess(true);
-            //clear state and controlled inputs
-            //need value attrib on inputs for this
+            // clear state and controlled inputs (by assigned value attr) 
             setUsername('');
             setPassword('');
             setMatchPassword('');
-        } catch (err) {
-            if (!err?.response) {
+        } catch (error) {
+            if (!error?.response) {
                 setErrMsg('No Server Response');
-            } else if (err.response?.status === 409) {
+            } else if (error.response?.status === 409) {
                 setErrMsg('Username Taken');
             } else {
-                // setErrMsg('Registration Failed')
-                setSuccess(true);
+                setErrMsg('Registration Failed')
+                // setSuccess(true);
             }
             errRef.current.focus();
         }
@@ -92,32 +93,32 @@ const Register = () => {
         <>
             {success ? (
                 <section className="registerSection">
-                    <h1>Success!</h1>
-                    <p>
-                        <a href="/signin">Sign In</a>
+                    <p className="successmsg">Registered Successfully</p>
+                    <p><br /><br></br>
+                        <Link to="/"><button>Continue to Login</button></Link>
                     </p>
                 </section>
             ) : (
-                <section className="registerSection">
+                <section className="registerSection" autoComplete="off">
                     <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} >{errMsg}</p>
                     <h1>Register</h1>
                     <form onSubmit={handleSubmit}>
-                        <label for="username">Username:
+                        <label htmlFor="username">Username:
                             <FontAwesomeIcon icon={faCheck} className={validUsername ? "valid" : "hide"} />
                             <FontAwesomeIcon icon={faTimes} className={validUsername || !username ? "hide" : "invalid"} />
                         </label>
-                        <input type="text" id="username" ref={usernameInputRef} autoComplete="off"
+                        <input type="text" id="username" ref={usernameInputRef}
                             onChange={(e) => setUsername(e.target.value)} value={username} required
                             onFocus={() => setUsernameFocus(true)} onBlur={() => setUsernameFocus(false)}
                         />
-                        <p className={usernameFocus && username && !validUsername ? "instructions" : "offscreen"}>
+                        <p className={usernameFocus && username ? "instructions" : "offscreen"}>
                             <FontAwesomeIcon icon={faInfoCircle} />
                             3 to 21 characters.<br />
                             Username must consist of letters (both uppercase and lowercase) and digits only. <br />
                             Special characters allowed: "- _".
                         </p>
 
-                        <label for="password">Password:
+                        <label htmlFor="password">Password:
                             <FontAwesomeIcon icon={faCheck} className={validPassword ? "valid" : "hide"} />
                             <FontAwesomeIcon icon={faTimes} className={validPassword || !password ? "hide" : "invalid"} />
                         </label>
@@ -132,7 +133,7 @@ const Register = () => {
                             Special characters allowed: "@ $ ! % * ? & / ~ . _ -".
                         </p>
 
-                        <label for="matchPassword">Confirm Password:
+                        <label htmlFor="matchPassword">Confirm Password:
                             <FontAwesomeIcon icon={faCheck} className={validMatch && matchPassword ? "valid" : "hide"} />
                             <FontAwesomeIcon icon={faTimes} className={validMatch || !matchPassword ? "hide" : "invalid"} />
                         </label>
@@ -150,8 +151,7 @@ const Register = () => {
                     <p>
                         Already registered?<br />
                         <span className="line">
-                            {/*put router link here*/}
-                            <a href="/signin">Sign In</a>
+                            <Link to="/">Sign In</Link>
                         </span>
                     </p>
                 </section>
