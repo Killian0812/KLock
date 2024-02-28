@@ -63,6 +63,7 @@ const Login = () => {
             {success ? (
                 <section className="registerSection">
                     <h1>Success!</h1>
+                    <Link to="/home">Home Page</Link>
                 </section>
             ) : (
                 <section className="registerSection">

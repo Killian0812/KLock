@@ -89,13 +89,23 @@ const Register = () => {
         }
     }
 
+    const registerAgain = (e) => {
+        e.preventDefault();
+        setSuccess(false);
+    }
+
     return (
         <>
             {success ? (
                 <section className="registerSection">
                     <p className="successmsg">Registered Successfully</p>
-                    <p><br /><br></br>
-                        <Link to="/"><button>Continue to Login</button></Link>
+                    <p><br />
+                        <Link to="/"><button>Continue to Login</button></Link><br />
+                        <p></p>
+                        <p style={{ marginTop: "70px", marginBottom: "10px" }}>Or</p>
+                        <span>
+                            <p onClick={registerAgain} style={{ textDecorationLine: "underline" }}>Register another Account</p>
+                        </span>
                     </p>
                 </section>
             ) : (

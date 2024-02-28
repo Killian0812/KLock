@@ -21,11 +21,18 @@ connection.once('open', () => {
     console.log("Database connection established successfully");
 })
 
+// middlewares
+const verifyJWT = require('./middlewares/verifyJWT');
+
 // routing
-const registerRouter = require('./router/registerRouter');
-const loginRouter = require('./router/loginRouter');
+const registerRouter = require('./routes/register.router');
+const loginRouter = require('./routes/login.router');
+const homeRouter = require('./routes/home.router');
+
 app.use('/login', loginRouter);
 app.use('/register', registerRouter);
+// only exec authorization at /home
+app.use('/home', verifyJWT, homeRouter);
 
 // const Message = require('./models/Message');
 

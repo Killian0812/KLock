@@ -1,8 +1,7 @@
 const bcrypt = require('bcrypt');
-const router = require('express').Router();
-let User = require('../models/user.model');
+var User = require('../models/user.model');
 
-router.route('/').post(async (req, res) => {
+const handleRegister = async (req, res) => {
     const username = req.body.username;
     const password = req.body.password;
 
@@ -13,7 +12,6 @@ router.route('/').post(async (req, res) => {
         res.status(409).json("Username taken");
     }
     else {
-
         // Generate a salt
         bcrypt.genSalt(10, (err, salt) => {
             if (err) {
@@ -32,21 +30,10 @@ router.route('/').post(async (req, res) => {
                     newUser.save()
                         .then(() => res.status(200).json("Account registered"))
                         .catch(err => res.status(400).json(err));
-
-                    // Example: Compare the hashed password with a provided password
-                    // const providedPassword = 'mySecurePassword';
-                    // bcrypt.compare(providedPassword, hash, (err, result) => {
-                    //     if (err) {
-                    //         console.error('Error comparing passwords:', err);
-                    //         return;
-                    //     }
-
-                    //     console.log('Password Match:', result); // Should be true if passwords match
-                    // });
                 }
             });
         });
     }
-});
+}
 
-module.exports = router;
+module.exports = { handleRegister };

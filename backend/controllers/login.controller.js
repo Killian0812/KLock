@@ -1,9 +1,8 @@
 const bcrypt = require('bcrypt');
 const JWT = require('jsonwebtoken');
-const router = require('express').Router();
-let User = require('../models/user.model');
+var User = require('../models/user.model');
 
-router.route('/').post(async (req, res) => {
+const handleLogin = async (req, res) => {
     const username = req.body.username;
     const password = req.body.password;
 
@@ -38,6 +37,6 @@ router.route('/').post(async (req, res) => {
             res.status(500).json("Error Authenticating User");
         }
     }
-});
+}
 
-module.exports = router;
+module.exports = { handleLogin };
