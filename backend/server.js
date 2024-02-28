@@ -3,6 +3,7 @@ const http = require('http');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const socketIO = require('socket.io');
+const cookieParser = require('cookie-parser');
 
 require('dotenv').config();
 
@@ -10,8 +11,10 @@ const app = express();
 // const server = http.createServer(app);
 
 app.use(cors());
-app.use(express.json());
 
+// middlewares
+app.use(express.json());
+app.use(cookieParser());
 
 // mongodb atlas connect
 const uri = process.env.MONGODB_KILLIANCLUSTER_URI;
@@ -21,17 +24,22 @@ connection.once('open', () => {
     console.log("Database connection established successfully");
 })
 
-// middlewares
+// custom middlewares
 const verifyJWT = require('./middlewares/verifyJWT');
 
 // routing
 const registerRouter = require('./routes/register.router');
 const loginRouter = require('./routes/login.router');
 const homeRouter = require('./routes/home.router');
+const logoutRouter = require('./routes/logout.router');
+const refreshTokenRouter = require('./routes/refreshToken.router');
 
-app.use('/login', loginRouter);
 app.use('/register', registerRouter);
-// only exec authorization at /home
+app.use('/login', loginRouter);
+app.use('/refresh', refreshTokenRouter);
+app.use('/logout', logoutRouter);
+
+// only exec authorization before accessing /home
 app.use('/home', verifyJWT, homeRouter);
 
 // const Message = require('./models/Message');

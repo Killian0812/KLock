@@ -23,7 +23,12 @@ const handleLogin = async (req, res) => {
                     process.env.REFRESH_TOKEN_SECRET, { expiresIn: '1d' });
 
                 // Saving refreshToken with current user
-                // mongo here
+                try {
+                    existingUser.refreshToken = refreshToken;
+                    await existingUser.save();
+                } catch (error) {
+                    console.log("Error saving refreshToken to DB");
+                }
 
                 console.log(refreshToken);
                 // sent refresh token as http cookie, last for 1d
