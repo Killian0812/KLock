@@ -17,10 +17,21 @@ const handleLogin = async (req, res) => {
             const correctPassword = await bcrypt.compare(password, existingUser.password);
             if (correctPassword) {
                 // create JWTs
-                const accessToken = JWT.sign({ "username": existingUser.username },
-                    process.env.ACCESS_TOKEN_SECRET, { expiresIn: '30s' });
-                const refreshToken = JWT.sign({ "username": existingUser.username },
-                    process.env.REFRESH_TOKEN_SECRET, { expiresIn: '1d' });
+                const accessToken = JWT.sign(
+                    {
+                        "UserInfo": {
+                            "username": existingUser.username,
+                            "roles": existingUser.roles
+                        }
+                    },
+                    process.env.ACCESS_TOKEN_SECRET,
+                    { expiresIn: '5m' }
+                );
+                const refreshToken = JWT.sign(
+                    { "username": existingUser.username },
+                    process.env.REFRESH_TOKEN_SECRET,
+                    { expiresIn: '1d' }
+                );
 
                 // Saving refreshToken with current user
                 try {

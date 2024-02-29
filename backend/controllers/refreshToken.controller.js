@@ -20,8 +20,16 @@ const handleRefreshToken = async (req, res) => {
         (err, decoded) => {
             if (err || existingUser.username !== decoded.username)
                 return res.status(403).send("Error verifying jwt");
-            const newAccessToken = JWT.sign({ "username": existingUser.username },
-                process.env.ACCESS_TOKEN_SECRET, { expiresIn: '30s' });
+            const newAccessToken = JWT.sign(
+                {
+                    "UserInfo": {
+                        "username": existingUser.username,
+                        "roles": existingUser.roles
+                    }
+                },
+                process.env.ACCESS_TOKEN_SECRET,
+                { expiresIn: '5m' }
+            );
             res.json({ accessToken: newAccessToken });
         }
     );
