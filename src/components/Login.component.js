@@ -60,35 +60,37 @@ const Login = () => {
 
     return (
         <>
-            {success ? (
-                <section className="registerSection">
-                    <h1>Success!</h1>
-                    <Link to="/home">Home Page</Link>
-                </section>
-            ) : (
-                <section className="registerSection">
-                    <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} >{errMsg}</p>
-                    <h1>Login</h1>
-                    <form onSubmit={handleSubmit}>
-                        <label htmlFor="username">Username:</label>
-                        <input type="text" id="username" ref={usernameInputRef}
-                            onChange={(e) => setUsername(e.target.value)} value={username} required />
+            <div className='Home'>
+                {success ? (
+                    <section className="registerSection">
+                        <h1>Success!</h1>
+                        <Link to="/dashboard">Home Page</Link>
+                    </section>
+                ) : (
+                    <section className="registerSection">
+                        <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} >{errMsg}</p>
+                        <h1>Login</h1>
+                        <form onSubmit={handleSubmit}>
+                            <label htmlFor="username">Username:</label>
+                            <input type="text" id="username" ref={usernameInputRef}
+                                onChange={(e) => setUsername(e.target.value)} value={username} required />
 
-                        <label htmlFor="password">Password:</label>
-                        <input type="password" id="password" required autoComplete="new-password"
-                            onChange={(e) => setPassword(e.target.value)} value={password} />
+                            <label htmlFor="password">Password:</label>
+                            <input type="password" id="password" required autoComplete="new-password"
+                                onChange={(e) => setPassword(e.target.value)} value={password} />
 
-                        <button disabled={(!username || !password) ? true : false}>Sign In</button>
-                    </form>
-                    <p>
-                        Need an account?<br />
-                        <span className="line">
-                            <Link to="/signup">Sign Up</Link>
-                        </span>
-                    </p>
-                </section>
-            )
-            }
+                            <button disabled={(!username || !password) ? true : false}>Sign In</button>
+                        </form>
+                        <p>
+                            Need an account?<br />
+                            <span className="line">
+                                <Link to="/signup">Sign Up</Link>
+                            </span>
+                        </p>
+                    </section>
+                )
+                }
+            </div>
         </>
     )
 }

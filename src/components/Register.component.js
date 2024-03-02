@@ -96,76 +96,79 @@ const Register = () => {
 
     return (
         <>
-            {success ? (
-                <section className="registerSection">
-                    <p className="successmsg">Registered Successfully</p>
-                    <p><br />
-                        <Link to="/"><button>Continue to Login</button></Link><br />
-                        <p></p>
-                        <p style={{ marginTop: "70px", marginBottom: "10px" }}>Or</p>
-                        <span>
-                            <p onClick={registerAgain} style={{ textDecorationLine: "underline" }}>Register another Account</p>
-                        </span>
-                    </p>
-                </section>
-            ) : (
-                <section className="registerSection" autoComplete="off">
-                    <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} >{errMsg}</p>
-                    <h1>Register</h1>
-                    <form onSubmit={handleSubmit}>
-                        <label htmlFor="username">Username:
-                            <FontAwesomeIcon icon={faCheck} className={validUsername ? "valid" : "hide"} />
-                            <FontAwesomeIcon icon={faTimes} className={validUsername || !username ? "hide" : "invalid"} />
-                        </label>
-                        <input type="text" id="username" ref={usernameInputRef}
-                            onChange={(e) => setUsername(e.target.value)} value={username} required
-                            onFocus={() => setUsernameFocus(true)} onBlur={() => setUsernameFocus(false)}
-                        />
-                        <p className={usernameFocus && username ? "instructions" : "offscreen"}>
-                            <FontAwesomeIcon icon={faInfoCircle} />
-                            3 to 21 characters.<br />
-                            Username must consist of letters (both uppercase and lowercase) and digits only. <br />
-                            Special characters allowed: "- _".
+            <div className="Register">
+                {success ? (
+                    <section className="registerSection">
+                        <p className="successmsg">Registered Successfully</p>
+                        <p><br />
+                            <Link to="/"><button>Continue to Login</button></Link><br />
+                            <p></p>
+                            <p style={{ marginTop: "70px", marginBottom: "10px" }}>Or</p>
+                            <span>
+                                <p onClick={registerAgain} style={{ textDecorationLine: "underline" }}>Register another Account</p>
+                            </span>
                         </p>
+                    </section>
+                ) : (
+                    <section className="registerSection" autoComplete="off">
+                        <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} >{errMsg}</p>
+                        <h1>Register</h1>
+                        <form onSubmit={handleSubmit}>
+                            <label htmlFor="username">Username:
+                                <FontAwesomeIcon icon={faCheck} className={validUsername ? "valid" : "hide"} />
+                                <FontAwesomeIcon icon={faTimes} className={validUsername || !username ? "hide" : "invalid"} />
+                            </label>
+                            <input type="text" id="username" ref={usernameInputRef}
+                                onChange={(e) => setUsername(e.target.value)} value={username} required
+                                onFocus={() => setUsernameFocus(true)} onBlur={() => setUsernameFocus(false)}
+                            />
+                            <p className={usernameFocus && username ? "instructions" : "offscreen"}>
+                                <FontAwesomeIcon icon={faInfoCircle} />
+                                3 to 21 characters.<br />
+                                Username must consist of letters (both uppercase and lowercase) and digits only. <br />
+                                Special characters allowed: "- _".
+                            </p>
 
-                        <label htmlFor="password">Password:
-                            <FontAwesomeIcon icon={faCheck} className={validPassword ? "valid" : "hide"} />
-                            <FontAwesomeIcon icon={faTimes} className={validPassword || !password ? "hide" : "invalid"} />
-                        </label>
-                        <input type="password" id="password"
-                            onChange={(e) => setPassword(e.target.value)} value={password} required
-                            onFocus={() => setPasswordFocus(true)} onBlur={() => setPasswordFocus(false)}
-                        />
-                        <p className={passwordFocus && !validPassword ? "instructions" : "offscreen"}>
-                            <FontAwesomeIcon icon={faInfoCircle} />
-                            6 to 24 characters.<br />
-                            Password must include uppercase letters, lowercase letters, and a number.<br />
-                            Special characters allowed: "@ $ ! % * ? & / ~ . _ -".
+                            <label htmlFor="password">Password:
+                                <FontAwesomeIcon icon={faCheck} className={validPassword ? "valid" : "hide"} />
+                                <FontAwesomeIcon icon={faTimes} className={validPassword || !password ? "hide" : "invalid"} />
+                            </label>
+                            <input type="password" id="password"
+                                onChange={(e) => setPassword(e.target.value)} value={password} required
+                                onFocus={() => setPasswordFocus(true)} onBlur={() => setPasswordFocus(false)}
+                            />
+                            <p className={passwordFocus && !validPassword ? "instructions" : "offscreen"}>
+                                <FontAwesomeIcon icon={faInfoCircle} />
+                                6 to 24 characters.<br />
+                                Password must include uppercase letters, lowercase letters, and a number.<br />
+                                Special characters allowed: "@ $ ! % * ? & / ~ . _ -".
+                            </p>
+
+                            <label htmlFor="matchPassword">Confirm Password:
+                                <FontAwesomeIcon icon={faCheck} className={validMatch && matchPassword ? "valid" : "hide"} />
+                                <FontAwesomeIcon icon={faTimes} className={validMatch || !matchPassword ? "hide" : "invalid"} />
+                            </label>
+                            <input type="password" id="matchPassword"
+                                onChange={(e) => setMatchPassword(e.target.value)} value={matchPassword} required
+                                onFocus={() => setMatchFocus(true)} onBlur={() => setMatchFocus(false)}
+                            />
+                            <p className={matchFocus && !validMatch ? "instructions" : "offscreen"}>
+                                <FontAwesomeIcon icon={faInfoCircle} />
+                                Must match above password input field.
+                            </p>
+
+                            <button disabled={!validUsername || !validPassword || !validMatch ? true : false}>Sign Up</button>
+                        </form>
+                        <p>
+                            Already registered?<br />
+                            <span className="line">
+                                <Link to="/">Sign In</Link>
+                            </span>
                         </p>
-
-                        <label htmlFor="matchPassword">Confirm Password:
-                            <FontAwesomeIcon icon={faCheck} className={validMatch && matchPassword ? "valid" : "hide"} />
-                            <FontAwesomeIcon icon={faTimes} className={validMatch || !matchPassword ? "hide" : "invalid"} />
-                        </label>
-                        <input type="password" id="matchPassword"
-                            onChange={(e) => setMatchPassword(e.target.value)} value={matchPassword} required
-                            onFocus={() => setMatchFocus(true)} onBlur={() => setMatchFocus(false)}
-                        />
-                        <p className={matchFocus && !validMatch ? "instructions" : "offscreen"}>
-                            <FontAwesomeIcon icon={faInfoCircle} />
-                            Must match above password input field.
-                        </p>
-
-                        <button disabled={!validUsername || !validPassword || !validMatch ? true : false}>Sign Up</button>
-                    </form>
-                    <p>
-                        Already registered?<br />
-                        <span className="line">
-                            <Link to="/">Sign In</Link>
-                        </span>
-                    </p>
-                </section>
-            )}
+                    </section>
+                )
+                }
+            </div>
         </>
     )
 }
