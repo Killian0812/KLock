@@ -17,14 +17,14 @@ body {
   background-color: rgb(34, 34, 34);
 }
 
-.App {
-  /* display: flex; */
-  /* flex-direction: column; */
-  /* justify-content: center; */
-  /* min-height: 100vh; */
-  /* align-items: center; */
-  /* padding: 1rem 0.5rem; */
-}
+/* .App {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 100vh;
+  align-items: center;
+  padding: 1rem 0.5rem;
+} */
 
 .Register,
 .Home {
@@ -142,4 +142,16 @@ button {
 
 .line {
   display: inline-block;
+}
+
+.react-confirm-alert-body button {
+   width: 30%;
+}
+
+.react-confirm-alert-body {
+  font-size: 20px;
+}
+
+.react-confirm-alert-body h1 {
+  font-size: 30px;
 }

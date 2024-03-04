@@ -1,14 +1,20 @@
-import { useRef, useState, useEffect, useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { useRef, useState, useEffect } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-import AuthContext from '../context/AuthProvider';
+// import AuthContext from '../context/AuthProvider';
+import useAuth from '../hooks/useAuth';
 
 const LOGIN_URL = "/login";
 
 const Login = () => {
+
     // setAuth state from wrapper AuthProvider.js
-    const { auth, setAuth } = useContext(AuthContext);
+    const { setAuth } = useAuth();
+
+    const navigate = useNavigate();
+    const location = useLocation();
+    const from = location.state?.from?.pathname || "/dashboard";
 
     const usernameInputRef = useRef();
     const errRef = useRef();
@@ -17,7 +23,7 @@ const Login = () => {
     const [password, setPassword] = useState('');
 
     const [errMsg, setErrMsg] = useState('');
-    const [success, setSuccess] = useState(false);
+    // const [success, setSuccess] = useState(false);
 
     useEffect(() => {
         if (usernameInputRef.current !== undefined)
@@ -38,10 +44,11 @@ const Login = () => {
             console.log(response.data);
             const accessToken = response?.data?.accessToken;
             const roles = response?.data?.roles;
-            // setAuth({ username, password, accessToken, roles });
+            setAuth({ username, password, accessToken, roles });
             setUsername('');
             setPassword('');
-            setSuccess(true);
+            // setSuccess(true);
+            navigate(from, { replace: true });
         } catch (error) {
             if (!error?.response) {
                 setErrMsg('No Server Response');
@@ -59,39 +66,29 @@ const Login = () => {
     }
 
     return (
-        <>
-            <div className='Home'>
-                {success ? (
-                    <section className="registerSection">
-                        <h1>Success!</h1>
-                        <Link to="/dashboard">Home Page</Link>
-                    </section>
-                ) : (
-                    <section className="registerSection">
-                        <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} >{errMsg}</p>
-                        <h1>Login</h1>
-                        <form onSubmit={handleSubmit}>
-                            <label htmlFor="username">Username:</label>
-                            <input type="text" id="username" ref={usernameInputRef}
-                                onChange={(e) => setUsername(e.target.value)} value={username} required />
+        <div className='Home'>
+            <section className="registerSection">
+                <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} >{errMsg}</p>
+                <h1>Login</h1>
+                <form onSubmit={handleSubmit}>
+                    <label htmlFor="username">Username:</label>
+                    <input type="text" id="username" ref={usernameInputRef}
+                        onChange={(e) => setUsername(e.target.value)} value={username} required />
 
-                            <label htmlFor="password">Password:</label>
-                            <input type="password" id="password" required autoComplete="new-password"
-                                onChange={(e) => setPassword(e.target.value)} value={password} />
+                    <label htmlFor="password">Password:</label>
+                    <input type="password" id="password" required autoComplete="new-password"
+                        onChange={(e) => setPassword(e.target.value)} value={password} />
 
-                            <button disabled={(!username || !password) ? true : false}>Sign In</button>
-                        </form>
-                        <p>
-                            Need an account?<br />
-                            <span className="line">
-                                <Link to="/signup">Sign Up</Link>
-                            </span>
-                        </p>
-                    </section>
-                )
-                }
-            </div>
-        </>
+                    <button disabled={(!username || !password) ? true : false}>Sign In</button>
+                </form>
+                <p>
+                    Need an account?<br />
+                    <span className="line">
+                        <Link to="/signup">Sign Up</Link>
+                    </span>
+                </p>
+            </section>
+        </div>
     )
 }
 
