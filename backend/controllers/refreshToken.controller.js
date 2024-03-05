@@ -19,7 +19,7 @@ const handleRefreshToken = async (req, res) => {
     JWT.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET,
         (err, decoded) => {
             if (err || existingUser.username !== decoded.username)
-                return res.status(403).send("Error verifying jwt");
+                return res.status(403).send("Error verifying jwt || Token maybe expired");
             const newAccessToken = JWT.sign(
                 {
                     "UserInfo": {

@@ -33,6 +33,7 @@ const loginRouter = require('./routes/login.router');
 const homeRouter = require('./routes/home.router');
 const logoutRouter = require('./routes/logout.router');
 const refreshTokenRouter = require('./routes/refreshToken.router');
+const adminRouter = require('./routes/admin.router');
 
 app.use('/register', registerRouter);
 app.use('/login', loginRouter);
@@ -41,6 +42,8 @@ app.use('/logout', logoutRouter);
 
 // only exec authorization before accessing /home
 app.use('/home', verifyJWT, homeRouter);
+
+app.use('/admin', verifyJWT, adminRouter);
 
 // const Message = require('./models/Message');
 

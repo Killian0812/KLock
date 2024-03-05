@@ -10,8 +10,10 @@ const verifyJWT = (req, res, next) => {
 
     const tokenInBearerHeader = req.headers['bearer']; // 'Bearer': token
 
-    if (!tokenInAuthHeader && !tokenInBearerHeader)
+    if (!tokenInAuthHeader && !tokenInBearerHeader) {
+        console.log("No JWT");
         return res.status(401).send("No authorization header");
+    }
     jwt.verify(tokenInAuthHeader || tokenInBearerHeader, process.env.ACCESS_TOKEN_SECRET,
         (err, decoded) => {
             if (err) {
