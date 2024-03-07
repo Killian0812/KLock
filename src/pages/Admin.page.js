@@ -4,13 +4,15 @@ import { Link } from "react-router-dom";
 
 export default function Admin() {
     const [users, setUsers] = useState();
+    const [loading, setLoading] = useState(true);
     const axiosPrivate = useAxiosPrivate();
 
     useEffect(() => {
         const getUsers = async () => {
             try {
                 const response = await axiosPrivate.get('/admin/users');
-                console.log(response.data);
+                // console.log(response.data);
+                setLoading(false);
                 setUsers(response.data);
             } catch (err) {
                 console.error(err);
@@ -24,12 +26,14 @@ export default function Admin() {
         <section>
             <h1>Admins Page</h1>
             <h3>User list</h3><br></br>
-            {users?.length
-                ? (
-                    <ul>
+            {loading
+                ? <p>Loading...</p>
+                : (users?.length
+                    ? <ul>
                         {users.map((user, i) => <li key={i}>{user?.username}</li>)}
                     </ul>
-                ) : <p>Loading...</p>
+                    : <p>No users</p>
+                )
             }
             <br></br>
             <div>

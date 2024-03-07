@@ -10,7 +10,7 @@ const LOGIN_URL = "/login";
 const Login = () => {
 
     // setAuth state from wrapper AuthProvider.js
-    const { setAuth } = useAuth();
+    const { setAuth, trusted, setTrusted } = useAuth();
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -34,6 +34,14 @@ const Login = () => {
         setErrMsg('');
     }, [username, password])
 
+    useEffect(() => {
+        localStorage.setItem("trusted", trusted);
+    }, [trusted])
+
+    const toggleTrusted = () => {
+        setTrusted(prev => !prev);
+    }
+
     const handleSubmit = async function (e) {
         e.preventDefault();
         try {
@@ -41,7 +49,7 @@ const Login = () => {
                 headers: { 'Content-Type': 'application/json' },
                 withCredentials: true
             });
-            console.log(response.data);
+            // console.log(response.data);
             const accessToken = response?.data?.accessToken;
             const roles = response?.data?.roles;
             setAuth({ username, password, accessToken, roles });
@@ -80,12 +88,15 @@ const Login = () => {
                         onChange={(e) => setPassword(e.target.value)} value={password} />
 
                     <button disabled={(!username || !password) ? true : false}>Sign In</button>
+
+                    <div className='trustedCheck'>
+                        <input type='checkbox' id='trusted' onChange={toggleTrusted} checked={trusted}></input>
+                        <label htmlFor='trusted'>Trust this device</label>
+                    </div>
                 </form>
                 <p>
                     Need an account?<br />
-                    <span className="line">
-                        <Link to="/signup">Sign Up</Link>
-                    </span>
+                    <Link to="/signup">Sign Up</Link>
                 </p>
             </section>
         </div>

@@ -13,6 +13,7 @@ import GroupChat from './pages/GroupChat.page';
 import Settings from './pages/Settings.page';
 import Unauthorized from './components/Unauthorized.component';
 import Admin from './pages/Admin.page';
+import PersistLogin from './components/PersistLogin.component';
 
 function App() {
   return (
@@ -24,21 +25,27 @@ function App() {
           <Route path="/signup" element={<Register />} />
           <Route path="/unauthorized" element={<Unauthorized />} />
 
-          {/* login required routes */}
-          <Route element={<Authenticate />}>
-            {/* chat user role - authenticate only */}
-            <Route path="/dashboard" element={<Layout />}>
-              <Route index element={<Home />} />
-              <Route path="profile" element={<Profile />} />
-              <Route path="chat" element={<Chat />} />
-              <Route path="groupchat" element={<GroupChat />} />
-              <Route path="settings" element={<Settings />} />
-            </Route>
+          <Route element={<PersistLogin />}>
 
-            {/* chat admin role - need authorization */}
-            <Route element={<Authorize allowedRoles={["CHAT_ADMIN"]} />}> { /*Protected route*/}
-              <Route path='admin' element={<Admin />}></Route>
+            {/* login required routes */}
+            <Route element={<Authenticate />}>
+
+              {/* chat user role - authenticate only */}
+              <Route path="/dashboard" element={<Layout />}>
+                <Route index element={<Home />} />
+                <Route path="profile" element={<Profile />} />
+                <Route path="chat" element={<Chat />} />
+                <Route path="groupchat" element={<GroupChat />} />
+                <Route path="settings" element={<Settings />} />
+              </Route>
+
+              {/* chat admin role - need authorization */}
+              <Route element={<Authorize allowedRoles={["CHAT_ADMIN"]} />}> { /*Protected route*/}
+                <Route path='admin' element={<Admin />}></Route>
+              </Route>
+
             </Route>
+            
           </Route>
 
         </Routes>

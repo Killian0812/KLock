@@ -6,7 +6,7 @@ const Authenticate = () => {
     // console.log(auth);
     const location = useLocation();
 
-    return auth?.username ? <Outlet></Outlet>
+    return auth?.accessToken ? <Outlet></Outlet>
         : <Navigate to="/" state={{ from: location }} replace></Navigate>
 }
 

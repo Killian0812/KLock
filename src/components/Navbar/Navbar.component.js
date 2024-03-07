@@ -8,14 +8,13 @@ import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
 import { Link } from 'react-router-dom';
 import { NavbarData } from './Navbar.data';
 import './Navbar.css';
-import useAuth from '../../hooks/useAuth';
+import useLogout from '../../hooks/useLogout';
 
 function Navbar() {
     const [sidebar, setSidebar] = useState(false);
     const showSidebar = () => setSidebar(!sidebar);
 
-    const { setAuth } = useAuth();
-
+    const logout = useLogout();
     const navigate = useNavigate();
 
     const navbarItems = [];
@@ -37,7 +36,7 @@ function Navbar() {
             buttons: [
                 {
                     label: 'Yes',
-                    onClick: () => logout()
+                    onClick: () => signOut()
                 },
                 {
                     label: 'No',
@@ -46,8 +45,8 @@ function Navbar() {
         });
     };
 
-    const logout = async () => {
-        setAuth({});
+    const signOut = async () => {
+        await logout();
         navigate('/');
     }
 

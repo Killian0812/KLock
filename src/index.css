@@ -81,6 +81,16 @@ button {
 
 button {
   padding: 0.5rem;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+button:not([disabled]):hover {
+  background-color: #bfbfbf;
+  color: #ffffff;
+}
+
+button[disabled]:hover {
+  cursor: not-allowed;
 }
 
 .instructions {
@@ -144,8 +154,26 @@ button {
   display: inline-block;
 }
 
+.trustedCheck {
+  font-size: 0.75rem;
+  margin-top: 10px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-end;
+}
+
+.trustedCheck label {
+  margin: 0;
+}
+
+[type="checkbox"] {
+  height: 20px;
+  width: 20px;
+  margin: 0 5px 2px 2px;
+}
+
 .react-confirm-alert-body button {
-   width: 30%;
+  width: 30%;
 }
 
 .react-confirm-alert-body {
