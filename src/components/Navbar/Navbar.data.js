@@ -1,7 +1,7 @@
 import React from 'react';
 import * as AiIcons from 'react-icons/ai';
 import * as IoIcons from 'react-icons/io';
-import * as Io5Icons from 'react-icons/io5';
+import * as BiIcons from "react-icons/bi";
 import * as BsIcons from 'react-icons/bs';
 
 export const NavbarData = [
@@ -18,15 +18,9 @@ export const NavbarData = [
     cName: 'nav-text'
   },
   {
-    title: 'Personal Chat',
-    path: '/chat',
-    icon: <Io5Icons.IoChatbox className='nav-icon' />,
-    cName: 'nav-text'
-  },
-  {
-    title: 'Group Chat',
-    path: '/groupchat',
-    icon: <IoIcons.IoIosChatboxes className='nav-icon' />,
+    title: 'Rooms',
+    path: '/rooms',
+    icon: <BiIcons.BiSolidDoorOpen  className='nav-icon' />,
     cName: 'nav-text'
   },
   {

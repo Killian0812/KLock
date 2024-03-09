@@ -5,6 +5,7 @@ require('dotenv').config();
 
 const handleLogout = async (req, res) => {
 
+    console.log("Someone loging out");
     const cookies = req.cookies;
     if (!cookies?.jwt) // if no cookies (or jwts) => doesnt need to clear cookie
         return res.sendStatus(204);

@@ -67,6 +67,11 @@ function Navbar() {
                     <Link className='menu-bars'>
                         <FaIcons.FaBars onClick={showSidebar} />
                     </Link>
+                    <div className='nav-text' style={{ position: "absolute", marginLeft: "77%" }}>
+                        <Link>
+                            <FaIcons.FaBell style={{ paddingBottom: "10px" }} />
+                        </Link>
+                    </div>
                     <div className='nav-text' style={{ position: "absolute", marginLeft: "85%" }}>
                         <Link to="/admin">
                             <FaIcons.FaUsersCog style={{ paddingBottom: "10px" }} />

@@ -11,7 +11,7 @@ const userSchema = new mongoose.Schema({
     },
     roles: {
         type: [String],
-        default: ["CHAT_USER"]
+        default: ["USER"]
     },
     active: {
         type: Boolean,

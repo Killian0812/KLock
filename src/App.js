@@ -8,8 +8,7 @@ import Authenticate from './components/Authenticate.component';
 import Authorize from './components/Authorize.component';
 import Home from './pages/Home.page';
 import Profile from './pages/Profile.page';
-import Chat from './pages/Chat.page';
-import GroupChat from './pages/GroupChat.page';
+import Rooms from './pages/Rooms.page';
 import Settings from './pages/Settings.page';
 import Unauthorized from './components/Unauthorized.component';
 import Admin from './pages/Admin.page';
@@ -34,13 +33,12 @@ function App() {
               <Route path="/dashboard" element={<Layout />}>
                 <Route index element={<Home />} />
                 <Route path="profile" element={<Profile />} />
-                <Route path="chat" element={<Chat />} />
-                <Route path="groupchat" element={<GroupChat />} />
+                <Route path="rooms" element={<Rooms />} />
                 <Route path="settings" element={<Settings />} />
               </Route>
 
               {/* chat admin role - need authorization */}
-              <Route element={<Authorize allowedRoles={["CHAT_ADMIN"]} />}> { /*Protected route*/}
+              <Route element={<Authorize allowedRoles={["ADMIN"]} />}> { /*Protected route*/}
                 <Route path='admin' element={<Admin />}></Route>
               </Route>
 

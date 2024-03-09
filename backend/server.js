@@ -18,7 +18,7 @@ app.use(cookieParser());
 
 // mongodb atlas connect
 const uri = process.env.MONGODB_KILLIANCLUSTER_URI;
-mongoose.connect(uri, { dbName: 'real-time-chat' });
+mongoose.connect(uri, { dbName: 'klock' });
 const connection = mongoose.connection;
 connection.once('open', () => {
     console.log("Database connection established successfully");
@@ -44,35 +44,6 @@ app.use('/logout', logoutRouter);
 app.use('/home', verifyJWT, homeRouter);
 
 app.use('/admin', verifyJWT, adminRouter);
-
-// const Message = require('./models/Message');
-
-// run socket.io within HTTP server instance
-// const io = socketIO(server);
-// io.on('connection', (socket) => {
-//     console.log('User connected:', socket.id);
-
-//     // Listen for incoming chat messages
-//     socket.on('chat message', (data) => {
-//         console.log('Received message:', data);
-//         const user = data.user;
-//         const text = data.message;
-
-//         // Save the message to MongoDB
-//         const message = new Message({ user, text });
-//         message.save()
-//             .then(() => console.log("Message saved to DB"))
-//             .catch(err => console.log(err));
-
-//         // Broadcast the message to all connected clients
-//         io.emit('chat message', data);
-//     });
-
-//     // Listen for user disconnection
-//     socket.on('disconnect', () => {
-//         console.log('User disconnected:', socket.id);
-//     });
-// });
 
 // server host
 const port = process.env.PORT;

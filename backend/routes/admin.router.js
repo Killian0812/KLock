@@ -3,11 +3,11 @@ const adminController = require('../controllers/admin.controller');
 const verifyRole = require('../middlewares/verifyRole');
 
 router.route('/users')
-    .get(verifyRole("CHAT_ADMIN"), adminController.handleGet)
+    .get(verifyRole("ADMIN"), adminController.handleGet)
 
 router.route('/users/:id')
-    .post(verifyRole("CHAT_ADMIN"), adminController.handlePost)
-    .put(verifyRole("CHAT_ADMIN"), adminController.handlePut)
-    .delete(verifyRole("CHAT_ADMIN"), adminController.handleDelete)
+    .post(verifyRole("ADMIN"), adminController.handlePost)
+    .put(verifyRole("ADMIN"), adminController.handlePut)
+    .delete(verifyRole("ADMIN"), adminController.handleDelete)
 
 module.exports = router;

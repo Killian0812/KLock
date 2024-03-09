@@ -97,15 +97,15 @@ const Register = () => {
     return (
         <>
             <div className="Register">
-                {success ? (
+                {!success ? (
                     <section className="registerSection">
                         <p className="successmsg">Registered Successfully</p>
                         <p><br />
                             <Link to="/"><button>Continue to Login</button></Link><br />
                             <p></p>
-                            <p style={{ marginTop: "70px", marginBottom: "10px" }}>Or</p>
+                            <p style={{ marginTop: "70px" }}>Or</p>
                             <span>
-                                <p onClick={registerAgain} style={{ textDecorationLine: "underline" }}>Register another Account</p>
+                                <p onClick={registerAgain} style={{ textDecorationLine: "underline", marginBottom: "20px" }}>Register another Account</p>
                             </span>
                         </p>
                     </section>
