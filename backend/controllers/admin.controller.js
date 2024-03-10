@@ -8,7 +8,7 @@ const handleGet = async (req, res) => {
         res.status(200).json(Users);
 }
 
-const handlePost = (req, res) => {
+const handlePost = async (req, res) => {
     console.log("Someone requesting /POST");
     res.status(200).json("OK");
 }

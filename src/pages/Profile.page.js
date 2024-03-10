@@ -1,7 +1,7 @@
-export default function Home() {
+export default function Profile() {
     return (
         <>
-            <h1>Home page</h1>
+            <h1>Profile page</h1>
         </>
     )
 }

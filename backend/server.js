@@ -34,6 +34,7 @@ const homeRouter = require('./routes/home.router');
 const logoutRouter = require('./routes/logout.router');
 const refreshTokenRouter = require('./routes/refreshToken.router');
 const adminRouter = require('./routes/admin.router');
+const guestRouter = require('./routes/guest.router');
 
 app.use('/register', registerRouter);
 app.use('/login', loginRouter);
@@ -45,8 +46,14 @@ app.use('/home', verifyJWT, homeRouter);
 
 app.use('/admin', verifyJWT, adminRouter);
 
+app.use('/guest', guestRouter);
+
+// init firebase, firestore
+const Firestore = require('./firebase/firebase');
+
 // server host
 const port = process.env.PORT;
 app.listen(port, () => {
     console.log("Server is running at " + port);
 })
+

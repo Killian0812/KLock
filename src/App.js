@@ -9,6 +9,7 @@ import Authorize from './components/Authorize.component';
 import Home from './pages/Home.page';
 import Profile from './pages/Profile.page';
 import Rooms from './pages/Rooms.page';
+import RoomDetail from './pages/RoomDetail.page';
 import Settings from './pages/Settings.page';
 import Unauthorized from './components/Unauthorized.component';
 import Admin from './pages/Admin.page';
@@ -34,6 +35,7 @@ function App() {
                 <Route index element={<Home />} />
                 <Route path="profile" element={<Profile />} />
                 <Route path="rooms" element={<Rooms />} />
+                <Route path="rooms/:roomId" element={<RoomDetail />} />
                 <Route path="settings" element={<Settings />} />
               </Route>
 
@@ -43,7 +45,7 @@ function App() {
               </Route>
 
             </Route>
-            
+
           </Route>
 
         </Routes>

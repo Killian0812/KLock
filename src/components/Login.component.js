@@ -52,7 +52,7 @@ const Login = () => {
             // console.log(response.data);
             const accessToken = response?.data?.accessToken;
             const roles = response?.data?.roles;
-            setAuth({ username, password, accessToken, roles });
+            setAuth({ username, accessToken, roles });
             setUsername('');
             setPassword('');
             // setSuccess(true);
@@ -74,7 +74,7 @@ const Login = () => {
     }
 
     return (
-        <div className='Home'>
+        <div className='Login'>
             <section className="registerSection">
                 <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} >{errMsg}</p>
                 <h1>Login</h1>

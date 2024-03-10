@@ -1,5 +1,6 @@
 var Room = require('../models/room.model');
 var User = require('../models/user.model');
+const { Firestore, FirebaseStorage } = require('../firebase/firebase');
 
 const handleGet = (req, res) => {
     console.log("Someone requesting /GET");
@@ -7,15 +8,14 @@ const handleGet = (req, res) => {
 }
 
 const handlePost = async (req, res) => {
-    console.log("Here");
-    const myUser = await User.findOne({ username: "Killian0812" });
-    const newRoom = new Room({});
-    newRoom.save()
-        .then(() => console.log("Inserted"))
-        .catch(err => console.log(err));
-    console.log("Someone requesting /POST");
-    res.status(200).json("OK");
-}
+    try {
+        console.log(req.file);
+        return res.status(200).json("OK");
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+};
 
 const handleDelete = (req, res) => {
     console.log("Someone requesting /DELETE");

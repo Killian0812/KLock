@@ -11,10 +11,12 @@ const useRefreshToken = () => {
         setAuth(prev => {
             // console.log(JSON.stringify(prev));
             // console.log(response.data.accessToken);  
-            return { 
-                ...prev, 
+            return {
+                ...prev,
+                username: response.data.username,
                 roles: response.data.roles,
-                accessToken: response.data.accessToken }  // replace old access token
+                accessToken: response.data.accessToken
+            }  // replace old access token
         });
         return response.data.accessToken;
     }

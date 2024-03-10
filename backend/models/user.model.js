@@ -17,6 +17,10 @@ const userSchema = new mongoose.Schema({
         type: Boolean,
         default: true
     },
+    room: {
+        type: [mongoose.Schema.Types.ObjectId],
+        ref: 'Room'
+    },
     refreshToken: String
 })
 
