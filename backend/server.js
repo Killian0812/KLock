@@ -1,15 +1,15 @@
 const express = require('express');
-const http = require('http');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const socketIO = require('socket.io');
+const path = require('path');
+const fs = require('fs');
 const cookieParser = require('cookie-parser');
 
 require('dotenv').config();
 
 const app = express();
-// const server = http.createServer(app);
 
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use(cors());
 
 // middlewares
@@ -21,7 +21,7 @@ const uri = process.env.MONGODB_KILLIANCLUSTER_URI;
 mongoose.connect(uri, { dbName: 'klock' });
 const connection = mongoose.connection;
 connection.once('open', () => {
-    console.log("Database connection established successfully");
+    console.log("MongoDB Cloud connection established successfully");
 })
 
 // custom middlewares
@@ -41,9 +41,8 @@ app.use('/login', loginRouter);
 app.use('/refresh', refreshTokenRouter);
 app.use('/logout', logoutRouter);
 
-// only exec authorization before accessing /home
+// only exec authorization before accessing /home or /admin
 app.use('/home', verifyJWT, homeRouter);
-
 app.use('/admin', verifyJWT, adminRouter);
 
 app.use('/guest', guestRouter);

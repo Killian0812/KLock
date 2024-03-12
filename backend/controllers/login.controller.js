@@ -6,8 +6,6 @@ const handleLogin = async (req, res) => {
     const username = req.body.username;
     const password = req.body.password;
 
-    console.log("Someone loging in");
-
     const existingUser = await User.findOne({ username });
     if (!existingUser) {
         res.status(400).json("User Not Found");
@@ -41,7 +39,7 @@ const handleLogin = async (req, res) => {
                     console.log("Error saving refreshToken to DB");
                 }
 
-                console.log(refreshToken);
+                console.log("Login successful");
                 // sent refresh token as http cookie, last for 1d
                 res.cookie('jwt', refreshToken, { httpOnly: true, sameSite: 'None', secure: true, maxAge: 24 * 60 * 60 * 1000 });
                 res.status(200).json({ accessToken, roles: existingUser.roles });

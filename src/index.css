@@ -250,7 +250,7 @@ button[disabled]:hover {
 .dt-length>select,
 .dt-search>input {
   height: 30px;
-  font-size: 20px;
+  font-size: 18px;
 }
 
 .dt-length>select>option {
@@ -261,10 +261,10 @@ table,
 th,
 tr,
 thead,
-tbody
-td {
+tbody td {
   border: 2px solid white;
 }
+
 th:hover {
   background-color: rgba(255, 255, 255, 0.1);
 }

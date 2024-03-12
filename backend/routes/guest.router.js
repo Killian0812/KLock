@@ -1,51 +1,45 @@
 const router = require('express').Router();
 const multer = require('multer');
-const upload = multer({ dest: 'uploads/' });
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
+const { v4: uuidv4 } = require('uuid');
 const { FirebaseStorage } = require('../firebase/firebase');
 const bucket = FirebaseStorage.bucket();
 const User = require('../models/user.model');
 const Room = require('../models/room.model');
+const Entry = require('../models/entry.model');
 
-const uploadToFirebaseStorage = (file) => {
-    const destination = file.filename;
+const uploadToFirebaseStorage = async (file) => {
+    var uuid = uuidv4();
+    const remoteFile = bucket.file(uuid);
+    await remoteFile.save(file.buffer, {
+        contentType: file.mimetype,
+        public: true,
+    }).then(() => {
+        console.log("File uploaded to Firebase successful");
+    }).catch((err) => {
+        console.log("Error uploading to Firebase: " + err);
+        uuid = null;
+    })
+    return uuid;
+}
 
-    const uploadOptions = {
-        destination: destination,
-        public: true, // set to true if you want the file to be publicly accessible
-        metadata: {
-            contentType: file.mimetype,
-        },
-    };
-
-    return bucket.upload(file.path, uploadOptions);
-};
-
-router.post('/testEntry', upload.single('file'), async function (req, res) {
+router.post('/newEntry', upload.single('file'), async function (req, res) {
     const file = req.file;
     if (!file) {
         return res.status(400).send('No file uploaded.');
     }
-    console.log(file);
-    try {
-        await uploadToFirebaseStorage(file);
-        console.log('File uploaded');
+    // console.log(file);
+    const filename = await uploadToFirebaseStorage(file);
+    console.log(filename);
 
-        // test file downloading from firebase
-        // const myFile = bucket.file(file.originalname);
-        // const destinationPath = "./uploads/" + file.originalname;
-
-        // try {
-        //     await myFile.download({ destination: destinationPath });
-        //     console.log('File downloaded successfully');
-        // }
-        // catch {
-        //     console.log("File download failed");
-        // }
+    const newEntry = new Entry({ mac: req.body.mac, image: filename });
+    newEntry.save().then(() => {
         return res.status(200).json("OK");
-    } catch (error) {
-        console.error('Error uploading file to Firebase Storage:', error);
-        return res.status(500).send('Internal Server Error');
-    }
+    }).catch((err) => {
+        console.log(err);
+        return res.status(500).json("FAILED");
+    })
 });
 
 router.post('/newRoom', async function (req, res) {
@@ -76,6 +70,13 @@ router.get('/roomDetails', async function (req, res) {
     const room = await Room.findOne({ _id: req.query.id });
     console.log(room);
     return res.status(200).json(room);
+})
+
+router.get('/roomEntries', async function (req, res) {
+    console.log("Quering room entries with mac address: " + req.query.mac);
+    const entries = await Entry.find({ mac: req.query.mac });
+    console.log(entries);
+    return res.status(200).json(entries);
 })
 
 module.exports = router;
