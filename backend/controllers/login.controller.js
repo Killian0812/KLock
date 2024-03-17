@@ -23,12 +23,12 @@ const handleLogin = async (req, res) => {
                         }
                     },
                     process.env.ACCESS_TOKEN_SECRET,
-                    { expiresIn: '1h' }
+                    { expiresIn: '8h' }
                 );
                 const refreshToken = JWT.sign(
                     { "username": existingUser.username },
                     process.env.REFRESH_TOKEN_SECRET,
-                    { expiresIn: '1d' }
+                    { expiresIn: '7d' }
                 );
 
                 // Saving refreshToken with current user
@@ -42,7 +42,7 @@ const handleLogin = async (req, res) => {
                 console.log("Login successful");
                 // sent refresh token as http cookie, last for 1d
                 res.cookie('jwt', refreshToken, { httpOnly: true, sameSite: 'None', secure: true, maxAge: 24 * 60 * 60 * 1000 });
-                res.status(200).json({ accessToken, roles: existingUser.roles });
+                res.status(200).json({ accessToken, roles: existingUser.roles, refreshToken });
             }
             else {
                 res.status(400).json("Wrong Password");
