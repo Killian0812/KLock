@@ -16,4 +16,13 @@ router.route('/getUserInfo/:username').get(async (req, res) => {
     return res.status(200).json(user);
 })
 
+router.route('/updateExpoPushToken/:username').post(async (req, res) => {
+    console.log("Someone updating info");
+    var user = await User.findOne({ username: req.params.username });
+    user.expoPushToken = req.body.expoPushToken;
+    console.log(req.body);
+    await user.save();
+    return res.status(200).json("OK");
+})
+
 module.exports = router;

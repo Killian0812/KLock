@@ -52,7 +52,9 @@ const Firestore = require('./firebase/firebase');
 
 // server host
 const port = process.env.PORT;
-app.listen(port, "192.168.1.10", () => {
+const ip = process.env.IP;
+
+app.listen(port, ip, () => {
     console.log("Server is running at " + port);
 })
 
