@@ -5,7 +5,8 @@ var User = require('../models/user.model');
 const handleLogin = async (req, res) => {
     const username = req.body.username;
     const password = req.body.password;
-
+    console.log("Someone loging in");
+    
     const existingUser = await User.findOne({ username });
     if (!existingUser) {
         res.status(400).json("User Not Found");

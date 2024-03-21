@@ -9,7 +9,7 @@ const roomSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    manager: {
+    managers: {
         type: [mongoose.Schema.Types.ObjectId],
         ref: 'User'
     }

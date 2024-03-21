@@ -2,7 +2,6 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const path = require('path');
-const fs = require('fs');
 const cookieParser = require('cookie-parser');
 
 require('dotenv').config();
@@ -14,6 +13,7 @@ app.use(cors());
 
 // middlewares
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 // mongodb atlas connect

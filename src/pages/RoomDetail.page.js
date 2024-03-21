@@ -75,7 +75,7 @@ const RoomDetail = () => {
                 <td style={{ textAlign: "center" }}>
                     <img image={entry.image} src="/loading.png" width="100" height="100" alt="face" />
                 </td>
-                <td>{entry.user || "guest"}</td>
+                <td>{entry.name}</td>
                 <td>{formatDate(entry.createdAt)}</td>
             </tr>
         );

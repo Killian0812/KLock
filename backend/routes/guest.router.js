@@ -8,6 +8,7 @@ const bucket = FirebaseStorage.bucket();
 const User = require('../models/user.model');
 const Room = require('../models/room.model');
 const Entry = require('../models/entry.model');
+const { sendNotifications } = require('../expo/notification.sender');
 
 const uploadToFirebaseStorage = async (file) => {
     var uuid = uuidv4();
@@ -24,16 +25,31 @@ const uploadToFirebaseStorage = async (file) => {
     return uuid;
 }
 
-router.post('/newEntry', upload.single('file'), async function (req, res) {
+async function handleNotification(MAC) {
+    const room = await Room.findOne({ mac: MAC });
+    if (room) {
+        const managers = room.managers;
+        User.find({ _id: managers })
+            .then(users => {
+                sendNotifications(users, room);
+            })
+    }
+    console.log("Notifications sent to all managers");
+};
+
+router.post('/newEntry', upload.single('File'), async function (req, res) {
     const file = req.file;
     if (!file) {
-        return res.status(400).send('No file uploaded.');
+        return res.status(400).send('NO FILE UPLOADED');
     }
-    // console.log(file);
+    console.log(req.body);
+
     const filename = await uploadToFirebaseStorage(file);
     console.log(filename);
 
-    const newEntry = new Entry({ mac: req.body.mac, image: filename });
+    await handleNotification(req.body.MAC);
+
+    const newEntry = new Entry({ mac: req.body.MAC, image: filename, name: req.body.name });
     newEntry.save().then(() => {
         return res.status(200).json("OK");
     }).catch((err) => {
