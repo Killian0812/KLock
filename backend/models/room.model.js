@@ -9,10 +9,12 @@ const roomSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    managers: {
-        type: [mongoose.Schema.Types.ObjectId],
-        ref: 'User'
-    }
+    managers: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User',
+        }
+    ]
 })
 
 module.exports = mongoose.model('Room', roomSchema)

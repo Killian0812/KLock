@@ -9,6 +9,7 @@ const User = require('../models/user.model');
 const Room = require('../models/room.model');
 const Entry = require('../models/entry.model');
 const { sendNotifications } = require('../expo/notification.sender');
+const { io, getRecieverSocketId } = require('../socket');
 
 const uploadToFirebaseStorage = async (file) => {
     var uuid = uuidv4();
@@ -42,7 +43,7 @@ router.post('/newEntry', upload.single('File'), async function (req, res) {
     if (!file) {
         return res.status(400).send('NO FILE UPLOADED');
     }
-    console.log(req.body);
+    console.log(file);
 
     const filename = await uploadToFirebaseStorage(file);
     console.log(filename);
@@ -94,5 +95,35 @@ router.get('/roomEntries', async function (req, res) {
     console.log(entries);
     return res.status(200).json(entries);
 })
+
+router.post('/requestApproval', upload.single('File'), async function (req, res) {
+    const file = req.file;
+    if (!file) {
+        return res.status(400).send('NO FILE UPLOADED');
+    }
+    // console.log(file);
+    
+    const MAC = req.body.MAC;
+
+    const room = await Room.findOne({ mac: MAC });
+    const managers = room?.managers;
+    User.find({ _id: { $in: managers } }).then((users) => {
+        users.forEach(user => {
+            const sendToUser = io.to(getRecieverSocketId(user.username)).emit("Need Approval", {
+                mac: MAC,
+                file: file,
+                time: "16:00 27/03/2024"
+            });
+            if (sendToUser)
+                console.log(`Request sent to user: ${user.username}`);
+            else
+                console.log(`Error sending request to user: ${user.username}`)
+        });
+    }).catch(err => {
+        console.log(err);
+        return res.sendStatus(500);
+    })
+    return res.sendStatus(200);
+});
 
 module.exports = router;

@@ -1,6 +1,5 @@
 import './App.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-
 import Register from './components/Register.component';
 import Login from './components/Login.component';
 import Layout from './components/Layout.component';
@@ -16,7 +15,7 @@ import Admin from './pages/Admin.page';
 import PersistLogin from './components/PersistLogin.component';
 
 function App() {
-  
+
   return (
     <main className="App">
       <BrowserRouter>

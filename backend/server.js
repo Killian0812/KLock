@@ -6,7 +6,7 @@ const cookieParser = require('cookie-parser');
 
 require('dotenv').config();
 
-const app = express();
+const { app, server } = require('./socket');
 
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use(cors());
@@ -54,7 +54,7 @@ const Firestore = require('./firebase/firebase');
 const port = process.env.PORT;
 const ip = process.env.IP;
 
-app.listen(port, ip, () => {
-    console.log("Server is running at " + port);
-})
+server.listen(port, ip, () => {
+    console.log(`Server running at ${ip}:${port}`);
+});
 

@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { IconContext } from 'react-icons';
 import * as FaIcons from 'react-icons/fa';
 import * as AiIcons from 'react-icons/ai';
 import { confirmAlert } from 'react-confirm-alert'; // Import
 import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
-import { Link } from 'react-router-dom';
 import { NavbarData } from './Navbar.data';
 import './Navbar.css';
 import useLogout from '../../hooks/useLogout';
@@ -15,7 +14,6 @@ function Navbar() {
     const showSidebar = () => setSidebar(!sidebar);
 
     const logout = useLogout();
-    const navigate = useNavigate();
 
     const navbarItems = [];
     for (let i = 0; i < NavbarData.length - 1; i++) {
@@ -47,7 +45,6 @@ function Navbar() {
 
     const signOut = async () => {
         await logout();
-        navigate('/');
     }
 
     const logoutNav = NavbarData[NavbarData.length - 1];

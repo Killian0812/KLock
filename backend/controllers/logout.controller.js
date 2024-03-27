@@ -1,4 +1,3 @@
-const JWT = require('jsonwebtoken');
 var User = require('../models/user.model');
 
 require('dotenv').config();
