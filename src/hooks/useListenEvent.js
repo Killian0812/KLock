@@ -4,17 +4,17 @@ import useNotification from './useNotification';
 
 const useListenEvent = () => {
     const { socket } = useSocket();
-    const { setNotifications } = useNotification();
+    const { setNewRequests } = useNotification();
 
     useEffect(() => {
         socket?.on("Need Approval", (data) => {
-            setNotifications(prev => {
+            setNewRequests(prev => {
                 return [...prev, data];
             });
         })
 
         return () => socket?.off("Need Approval"); // cleanup
-    }, [socket, setNotifications]);
+    }, [socket, setNewRequests]);
 }
 
 export default useListenEvent;

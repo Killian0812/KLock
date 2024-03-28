@@ -6,6 +6,7 @@ const { v4: uuidv4 } = require('uuid');
 const { FirebaseStorage } = require('../firebase/firebase');
 const bucket = FirebaseStorage.bucket();
 const User = require('../models/user.model');
+const PendingRequest = require('../models/pendingRequest.model');
 const Room = require('../models/room.model');
 const Entry = require('../models/entry.model');
 const { sendNotifications } = require('../expo/notification.sender');
@@ -26,16 +27,16 @@ const uploadToFirebaseStorage = async (file) => {
     return uuid;
 }
 
-async function handleNotification(MAC) {
+async function handleNotification(MAC, isGuest) {
     const room = await Room.findOne({ mac: MAC });
     if (room) {
         const managers = room.managers;
         User.find({ _id: managers })
             .then(users => {
-                sendNotifications(users, room);
+                sendNotifications(users, room, isGuest);
             })
     }
-    console.log("Notifications sent to all managers");
+    console.log("Pushed notifications to all managers");
 };
 
 router.post('/newEntry', upload.single('File'), async function (req, res) {
@@ -43,13 +44,15 @@ router.post('/newEntry', upload.single('File'), async function (req, res) {
     if (!file) {
         return res.status(400).send('NO FILE UPLOADED');
     }
-    console.log(file);
 
+    // upload to firebase
     const filename = await uploadToFirebaseStorage(file);
     console.log(filename);
 
-    await handleNotification(req.body.MAC);
+    // push notification to mobile app
+    await handleNotification(req.body.MAC, false);
 
+    // save to database
     const newEntry = new Entry({ mac: req.body.MAC, image: filename, name: req.body.name });
     newEntry.save().then(() => {
         return res.status(200).json("OK");
@@ -58,6 +61,71 @@ router.post('/newEntry', upload.single('File'), async function (req, res) {
         return res.status(500).json("FAILED");
     })
 });
+
+router.post('/requestApproval', upload.single('File'), async function (req, res) {
+    const file = req.file;
+    if (!file) {
+        return res.status(400).send('NO FILE UPLOADED');
+    }
+
+    // upload to firebase
+    const filename = await uploadToFirebaseStorage(file);
+    console.log(filename);
+
+    // push notification to mobile app
+    await handleNotification(req.body.MAC, true);
+
+    const MAC = req.body.MAC;
+    const room = await Room.findOne({ mac: MAC });
+    if (!room) {
+        return res.sendStatus(500);
+    }
+
+    // save pending request to database
+    const newPendingReq = new PendingRequest({ room: room._id, image: filename });
+    newPendingReq.save().then(() => {
+        console.log("Pending request added to database");
+    }).catch((err) => {
+        console.log("Error adding pending request to database: ", err);
+        return res.sendStatus(500);
+    });
+
+    // realtime notification using web socket
+    const managers = room.managers;
+    User.find({ _id: { $in: managers } }).then((users) => {
+        users.forEach(user => {
+            const socketId = getRecieverSocketId(user.username);
+            if (socketId) {
+                const sendToUser = io.to(socketId).emit("Need Approval", {
+                    pendingRequest: newPendingReq.toJSON(),
+                    room: room.toJSON(),
+                    file: file,
+                });
+                if (sendToUser)
+                    console.log(`Request sent to client socket: ${user.username}`);
+                else
+                    console.log(`Error sending request to client socket: ${user.username}`)
+            }
+        });
+    }).catch(err => {
+        console.log(err);
+        return res.sendStatus(500);
+    })
+    return res.sendStatus(200);
+});
+
+router.get('/pendingRequests', async function (req, res) {
+    console.log("Quering pending request");
+    const user = await User.findOne({ username: req.query.username });
+    const roomIds = user.room;
+    // replace ref with actual room object 
+    PendingRequest.find({ room: { $in: roomIds } }).populate('room').then((pendingRequests) => {
+        // console.log(pendingRequests);
+        return res.status(200).json(pendingRequests);
+    }).catch(() => {
+        return res.sendStatus(500);
+    })
+})
 
 router.post('/newRoom', async function (req, res) {
     const user = await User.findOne({ username: "Killian0812" });
@@ -95,35 +163,5 @@ router.get('/roomEntries', async function (req, res) {
     console.log(entries);
     return res.status(200).json(entries);
 })
-
-router.post('/requestApproval', upload.single('File'), async function (req, res) {
-    const file = req.file;
-    if (!file) {
-        return res.status(400).send('NO FILE UPLOADED');
-    }
-    // console.log(file);
-    
-    const MAC = req.body.MAC;
-
-    const room = await Room.findOne({ mac: MAC });
-    const managers = room?.managers;
-    User.find({ _id: { $in: managers } }).then((users) => {
-        users.forEach(user => {
-            const sendToUser = io.to(getRecieverSocketId(user.username)).emit("Need Approval", {
-                mac: MAC,
-                file: file,
-                time: "16:00 27/03/2024"
-            });
-            if (sendToUser)
-                console.log(`Request sent to user: ${user.username}`);
-            else
-                console.log(`Error sending request to user: ${user.username}`)
-        });
-    }).catch(err => {
-        console.log(err);
-        return res.sendStatus(500);
-    })
-    return res.sendStatus(200);
-});
 
 module.exports = router;

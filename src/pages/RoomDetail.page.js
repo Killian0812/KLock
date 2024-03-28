@@ -4,32 +4,22 @@ import axios from 'axios';
 import $ from 'jquery';
 import 'datatables.net-dt/js/dataTables.dataTables.min.js';
 import 'datatables.net-dt/css/dataTables.dataTables.min.css';
-import { initializeApp } from 'firebase/app';
-import { getStorage, ref, getDownloadURL } from "firebase/storage";
-
-const firebaseConfig = {
-    apiKey: "AIzaSyBJ8ZTPxvpMvBJp6s6l_4eNvJFiUfpsB8k",
-    authDomain: "klock-firebase.firebaseapp.com",
-    projectId: "klock-firebase",
-    storageBucket: "klock-firebase.appspot.com",
-    messagingSenderId: "1006560419150",
-    appId: "1:1006560419150:web:e7955b66486afc9e8b521f"
-};
-
-const app = initializeApp(firebaseConfig);
-const storage = getStorage(app);
+import useFirebase from '../hooks/useFirebase';
+import { ref, getDownloadURL } from "firebase/storage";
+import { formatDate } from '../tools/date.formatter';
 
 const RoomDetail = () => {
     const { roomId } = useParams();
     const [roomDetails, setRoomDetails] = useState({});
     const [roomEntries, setRoomEntries] = useState([]);
+    const { storage } = useFirebase();
 
     useEffect(() => { // update entries face image
         const imgs = document.getElementsByTagName("img");
         Array.from(imgs).forEach(async (img) => {
             img.src = await getDownloadURL(ref(storage, img.getAttribute("image")))
         });
-    }, [roomEntries]);
+    }, [roomEntries, storage]);
 
     useEffect(() => { // init DataTables 
         if (roomEntries?.length <= 0)
@@ -56,18 +46,6 @@ const RoomDetail = () => {
             })
         })
     }, [roomId]);
-
-    function formatDate(dateString) {
-        const date = new Date(dateString);
-        const hours = ("0" + date.getHours()).slice(-2);
-        const minutes = ("0" + date.getMinutes()).slice(-2);
-        const seconds = ("0" + date.getSeconds()).slice(-2);
-        const day = ("0" + date.getDate()).slice(-2);
-        const month = ("0" + (date.getMonth() + 1)).slice(-2);
-        const year = date.getFullYear();
-
-        return `${hours}:${minutes}:${seconds} ${day}/${month}/${year}`;
-    }
 
     const entriesList = roomEntries.map((entry) => {
         return (
