@@ -1,19 +1,20 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
+import useAxiosPrivate from "../hooks/useAxiosPrivate";
 export default function Admin() {
 
     const [rooms, setRooms] = useState([]);
     const { auth } = useAuth();
+    const axiosPrivate = useAxiosPrivate();
     const navigate = useNavigate();
 
     useEffect(() => {
-        axios.get(`/guest/rooms?username=${auth.username}`).then((res) => {
+        axiosPrivate.get(`/home/rooms?username=${auth.username}`).then((res) => {
             console.log(res.data);
             setRooms(res.data);
         })
-    }, [auth]);
+    }, [auth, axiosPrivate]);
 
     const handleGoToRoom = (roomId) => {
         navigate(`${roomId}`);

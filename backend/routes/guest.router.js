@@ -62,7 +62,7 @@ router.post('/newEntry', upload.single('File'), async function (req, res) {
     })
 });
 
-router.post('/requestApproval', upload.single('File'), async function (req, res) {
+router.post('/requestEntry', upload.single('File'), async function (req, res) {
     const file = req.file;
     if (!file) {
         return res.status(400).send('NO FILE UPLOADED');
@@ -97,14 +97,15 @@ router.post('/requestApproval', upload.single('File'), async function (req, res)
             const socketId = getRecieverSocketId(user.username);
             if (socketId) {
                 const sendToUser = io.to(socketId).emit("Need Approval", {
-                    pendingRequest: newPendingReq.toJSON(),
+                    newRequest: newPendingReq.toJSON(),
+                    id: newPendingReq._id.toString(),
                     room: room.toJSON(),
                     file: file,
                 });
                 if (sendToUser)
-                    console.log(`Request sent to client socket: ${user.username}`);
+                    console.log(`Request sent to socket client: ${user.username}`);
                 else
-                    console.log(`Error sending request to client socket: ${user.username}`)
+                    console.log(`Error sending request to socket client: ${user.username}`)
             }
         });
     }).catch(err => {
@@ -113,19 +114,6 @@ router.post('/requestApproval', upload.single('File'), async function (req, res)
     })
     return res.sendStatus(200);
 });
-
-router.get('/pendingRequests', async function (req, res) {
-    console.log("Quering pending request");
-    const user = await User.findOne({ username: req.query.username });
-    const roomIds = user.room;
-    // replace ref with actual room object 
-    PendingRequest.find({ room: { $in: roomIds } }).populate('room').then((pendingRequests) => {
-        // console.log(pendingRequests);
-        return res.status(200).json(pendingRequests);
-    }).catch(() => {
-        return res.sendStatus(500);
-    })
-})
 
 router.post('/newRoom', async function (req, res) {
     const user = await User.findOne({ username: "Killian0812" });
@@ -140,28 +128,5 @@ router.post('/newRoom', async function (req, res) {
         return res.status(500);
     })
 });
-
-router.get('/rooms', async function (req, res) {
-    console.log("Quering rooms");
-    const user = await User.findOne({ username: req.query.username });
-    const query = { _id: { $in: user?.room } };
-    const rooms = await Room.find(query);
-    // console.log(rooms);
-    return res.status(200).json(rooms);
-})
-
-router.get('/roomDetails', async function (req, res) {
-    console.log("Quering room detail with id:" + req.query.id);
-    const room = await Room.findOne({ _id: req.query.id });
-    console.log(room);
-    return res.status(200).json(room);
-})
-
-router.get('/roomEntries', async function (req, res) {
-    console.log("Quering room entries with mac address: " + req.query.mac);
-    const entries = await Entry.find({ mac: req.query.mac });
-    console.log(entries);
-    return res.status(200).json(entries);
-})
 
 module.exports = router;

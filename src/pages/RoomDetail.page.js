@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import axios from 'axios';
 import $ from 'jquery';
 import 'datatables.net-dt/js/dataTables.dataTables.min.js';
 import 'datatables.net-dt/css/dataTables.dataTables.min.css';
 import useFirebase from '../hooks/useFirebase';
+import useAxiosPrivate from '../hooks/useAxiosPrivate';
 import { ref, getDownloadURL } from "firebase/storage";
 import { formatDate } from '../tools/date.formatter';
 
@@ -13,6 +13,7 @@ const RoomDetail = () => {
     const [roomDetails, setRoomDetails] = useState({});
     const [roomEntries, setRoomEntries] = useState([]);
     const { storage } = useFirebase();
+    const axiosPrivate = useAxiosPrivate();
 
     useEffect(() => { // update entries face image
         const imgs = document.getElementsByTagName("img");
@@ -39,13 +40,15 @@ const RoomDetail = () => {
     }, [roomEntries]);
 
     useEffect(() => { // fetch data
-        axios.get(`/guest/roomDetails?id=${roomId}`).then((res) => {
+        async function fetchRoomData() {
+            const res = await axiosPrivate.get(`/home/roomDetails?id=${roomId}`);
             setRoomDetails(res.data);
-            axios.get(`/guest/roomEntries?mac=${res.data.mac}`).then((res2) => {
+            axiosPrivate.get(`/home/roomEntries?mac=${res.data.mac}`).then((res2) => {
                 setRoomEntries(res2.data);
-            })
-        })
-    }, [roomId]);
+            });
+        } // merge 2 fetch later
+        fetchRoomData();
+    }, [roomId, axiosPrivate]);
 
     const entriesList = roomEntries.map((entry) => {
         return (
