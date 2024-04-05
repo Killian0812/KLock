@@ -6,10 +6,10 @@ const app = express();
 
 const server = http.createServer(app);
 const io = new Server(server, {
-    // cors: {
-    //     origin: ["http://localhost:3000"],
-    //     methods: ["GET", "POST"],
-    // },
+    cors: {
+        origin: "*",
+        methods: ["GET", "POST"]
+    }
 });
 
 const getRecieverSocketId = (username) => {
@@ -26,6 +26,7 @@ const deviceSocketMap = {};
 io.on("connection", (socket) => {
     const username = socket.handshake.query.username;
     const MAC = socket.handshake.query.MAC;
+
     if (username) {
         console.log("An user connected", socket.id);
         userSocketMap[username] = socket.id;

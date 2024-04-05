@@ -48,7 +48,7 @@ router.get('/roomDetails', async function (req, res) {
 router.get('/roomEntries', async function (req, res) {
     console.log("Quering room entries with mac address: " + req.query.mac);
     const entries = await Entry.find({ mac: req.query.mac });
-    console.log(entries);
+    // console.log(entries);
     return res.status(200).json(entries);
 })
 
@@ -69,9 +69,11 @@ router.route('/approveEntry').post(verifyRole("USER"), async (req, res) => {
     const MAC = req.body.MAC;
     const status = req.body.status;
 
-    console.log(`${status}: ${MAC}`);
-    // delete from db
-    console.log(req.body.id);
+    console.log("approving for room: ", MAC);
+
+    console.log(`${status}: ${MAC}`);   
+
+    // delete request in db
     PendingRequest.findByIdAndDelete(req.body.id)
         .then(() => console.log("Pending request successfully removed"))
         .catch((e) => console.log("Error removing pending request: ", e));

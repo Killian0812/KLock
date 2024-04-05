@@ -3,7 +3,9 @@ var User = require('../models/user.model');
 require('dotenv').config();
 
 const handleRefreshToken = async (req, res) => {
+
     const cookies = req.cookies;
+
     if (!cookies?.jwt)
         return res.status(401).send("No JWT cookies");
 
@@ -13,13 +15,14 @@ const handleRefreshToken = async (req, res) => {
 
     const existingUser = await User.findOne({ refreshToken: refreshToken });
     if (!existingUser)
-        return res.status(403).send("Invalid refresh token");
+        return res.status(401).send("Invalid refresh token");
 
     // evaluate jwt 
     JWT.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET,
         (err, decoded) => {
             if (err || existingUser.username !== decoded.username)
-                return res.status(403).send("Error verifying jwt || Token maybe expired");
+                return res.status(403).send("Token expired");
+        
             const roles = existingUser.roles;
             const newAccessToken = JWT.sign(
                 {

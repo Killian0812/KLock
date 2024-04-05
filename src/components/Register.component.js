@@ -97,7 +97,7 @@ const Register = () => {
     return (
         <>
             <div className="Register">
-                {!success ? (
+                {success ? (
                     <section className="registerSection">
                         <p className="successmsg">Successfully Registered</p>
                         <p><br />

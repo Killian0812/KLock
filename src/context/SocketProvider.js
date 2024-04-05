@@ -11,11 +11,12 @@ export const SocketProvider = ({ children }) => {
     useEffect(() => {
         if (auth?.username) {
             console.log(`Has auth: ${auth.username}`);
-            const newSocket = io("", {
+            const newSocket = io("http://192.168.1.3:8080", {
                 query: {
                     username: auth.username,
                 },
             });
+            console.log(newSocket);
             setSocket(newSocket);
         } else {
             console.log(`No auth`);

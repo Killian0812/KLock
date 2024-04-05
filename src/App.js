@@ -20,7 +20,6 @@ function App() {
     <main className="App">
       <BrowserRouter>
         <Routes>
-
           <Route path="/" element={<Login />} />
           <Route path="/signup" element={<Register />} />
           <Route path="/unauthorized" element={<Unauthorized />} />
