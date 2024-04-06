@@ -7,7 +7,10 @@ const handleRefreshToken = async (req, res) => {
     const cookies = req.cookies;
 
     if (!cookies?.jwt)
+    {
+        console.log("No JWT cookies")
         return res.status(401).send("No JWT cookies");
+    }
 
     const refreshToken = cookies.jwt;
 
@@ -15,7 +18,10 @@ const handleRefreshToken = async (req, res) => {
 
     const existingUser = await User.findOne({ refreshToken: refreshToken });
     if (!existingUser)
+    {
+        console.log("Invalid refresh token")
         return res.status(401).send("Invalid refresh token");
+    }
 
     // evaluate jwt 
     JWT.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET,

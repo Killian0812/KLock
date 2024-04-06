@@ -44,7 +44,7 @@ const handleLogin = async (req, res) => {
                 // sent refresh token as http cookie, last for 1d
                 res.cookie('jwt', refreshToken, { httpOnly: true, sameSite: 'None', secure: true, maxAge: 24 * 60 * 60 * 1000 });
                 res.status(200).json({ accessToken, roles: existingUser.roles, refreshToken });
-            }
+            } 
             else {
                 res.status(400).json("Wrong Password");
             }

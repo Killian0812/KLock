@@ -68,15 +68,18 @@ router.get('/pendingRequests', verifyRole("USER"), async function (req, res) {
 router.route('/approveEntry').post(verifyRole("USER"), async (req, res) => {
     const MAC = req.body.MAC;
     const status = req.body.status;
+    const image = req.body.image;
 
-    console.log("approving for room: ", MAC);
-
-    console.log(`${status}: ${MAC}`);   
+    console.log(`${status}: ${MAC}`);
 
     // delete request in db
     PendingRequest.findByIdAndDelete(req.body.id)
         .then(() => console.log("Pending request successfully removed"))
         .catch((e) => console.log("Error removing pending request: ", e));
+
+    // add entry to db
+    const newEntry = new Entry({ mac: MAC, image: image });
+    newEntry.save();
 
     // emit to AD socket here
     const socketId = getDeviceSocketId(MAC);

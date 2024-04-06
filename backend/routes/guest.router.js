@@ -10,7 +10,7 @@ const PendingRequest = require('../models/pendingRequest.model');
 const Room = require('../models/room.model');
 const Entry = require('../models/entry.model');
 const { sendNotifications } = require('../expo/notification.sender');
-const { io, getRecieverSocketId } = require('../socket');
+const { io, getRecieverSocketId, getMobileRecieverSocketId } = require('../socket');
 
 const uploadToFirebaseStorage = async (file) => {
     var uuid = uuidv4();
@@ -94,13 +94,31 @@ router.post('/requestEntry', upload.single('File'), async function (req, res) {
     const managers = room.managers;
     User.find({ _id: { $in: managers } }).then((users) => {
         users.forEach(user => {
-            const socketId = getRecieverSocketId(user.username);
+
+            // send to web client
+            let socketId = getRecieverSocketId(user.username);
             if (socketId) {
                 const sendToUser = io.to(socketId).emit("Need Approval", {
                     newRequest: newPendingReq.toJSON(),
                     id: newPendingReq._id.toString(),
                     room: room.toJSON(),
                     file: file,
+                    filename: filename
+                });
+                if (sendToUser)
+                    console.log(`Request sent to socket client: ${user.username}`);
+                else
+                    console.log(`Error sending request to socket client: ${user.username}`)
+            }
+
+            // send to mobile app
+            socketId = getMobileRecieverSocketId(user.username);
+            if (socketId) {
+                const sendToUser = io.to(socketId).emit("Need Approval", {
+                    newRequest: newPendingReq.toJSON(),
+                    id: newPendingReq._id.toString(),
+                    room: room.toJSON(),
+                    filename: filename,
                 });
                 if (sendToUser)
                     console.log(`Request sent to socket client: ${user.username}`);

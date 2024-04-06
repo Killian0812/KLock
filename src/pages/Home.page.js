@@ -14,6 +14,7 @@ function PendingRequest({ data, onRequestApproval }) {
         await axiosPrivate.post("/home/approveEntry", {
             id: data._id,
             MAC: data.room.mac,
+            image: data.image,
             status: status
         });
 
@@ -73,6 +74,7 @@ function NewRequest({ data, onRequestApproval }) {
         await axiosPrivate.post("/home/approveEntry", {
             id: data.id,
             MAC: data.room.mac,
+            image: data.filename,
             status: status
         });
 
@@ -140,6 +142,13 @@ export default function Home() {
             img.src = await getDownloadURL(ref(storage, img.getAttribute("image")))
         });
     }, [pendingRequests, storage]);
+
+    useEffect(() => {
+        // clean up
+        return () => {
+            setNewRequests([]);
+        }
+    }, [setNewRequests]);
 
     const removePendingRequestComponent = (requestId) => {
         setPendingRequests(prevPendingRequests => prevPendingRequests.filter(request => request._id !== requestId));

@@ -16,16 +16,22 @@ const getRecieverSocketId = (username) => {
     return userSocketMap[username];
 }
 
+const getMobileRecieverSocketId = (username) => {
+    return mobileUserSocketMap[username];
+}
+
 const getDeviceSocketId = (MAC) => {
     return deviceSocketMap[MAC];
 }
 
 const userSocketMap = {};
+const mobileUserSocketMap = {};
 const deviceSocketMap = {};
 
 io.on("connection", (socket) => {
     const username = socket.handshake.query.username;
     const MAC = socket.handshake.query.MAC;
+    const mobileUser = socket.handshake.query.mobileUser;
 
     if (username) {
         console.log("An user connected", socket.id);
@@ -49,7 +55,18 @@ io.on("connection", (socket) => {
                 delete deviceSocketMap[MAC];
             console.log(deviceSocketMap);
         });
+    } else if (mobileUser) {
+        console.log("An mobile user connected", socket.id);
+        mobileUserSocketMap[mobileUser] = socket.id;
+        console.log(mobileUserSocketMap);
+
+        socket.on("disconnect", () => {
+            console.log("An mobile user disconnected", socket.id);
+            if (socket.id === mobileUserSocketMap[mobileUser])
+                delete mobileUserSocketMap[mobileUser];
+            console.log(mobileUserSocketMap);
+        });
     }
 });
 
-module.exports = { app, io, server, getRecieverSocketId, getDeviceSocketId };
+module.exports = { app, io, server, getRecieverSocketId, getDeviceSocketId, getMobileRecieverSocketId };
