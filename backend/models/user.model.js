@@ -23,8 +23,9 @@ const userSchema = new mongoose.Schema({
             ref: 'Room'
         }
     ],
+    refreshToken: String,
     expoPushToken: String,
-    refreshToken: String
+    mobileRefreshToken: String
 })
 
 module.exports = mongoose.model('User', userSchema)

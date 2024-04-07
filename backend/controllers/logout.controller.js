@@ -4,7 +4,7 @@ require('dotenv').config();
 
 const handleLogout = async (req, res) => {
 
-    console.log("Someone loging out");
+    console.log("Website logout");
     const cookies = req.cookies;
     if (!cookies?.jwt) // if no cookies (or jwts) => doesnt need to clear cookie
         return res.sendStatus(204);
@@ -29,5 +29,28 @@ const handleLogout = async (req, res) => {
         return res.status(204).send("User's refresh token removed");
     }
 }
+const handleMobileLogout = async (req, res) => {
 
-module.exports = { handleLogout }
+    console.log("Mobile logout");
+    const refreshToken = req.body.refreshToken;
+    if (!refreshToken)
+        return res.sendStatus(204);
+
+    // clearing user's refresh token in db since user logging out
+    const existingUser = await User.findOne({ mobileRefreshToken: refreshToken });
+    if (!existingUser) // ok if no user with specified token
+    {
+        return res.sendStatus(204);
+    } else { // if user exists
+        console.log(existingUser);
+        try {
+            existingUser.mobileRefreshToken = null;
+            await existingUser.save();
+        } catch (error) {
+            return res.status(500).send("Error removing user's refresh token");
+        }
+        return res.status(204).send("User's refresh token removed");
+    }
+}
+
+module.exports = { handleLogout, handleMobileLogout }
