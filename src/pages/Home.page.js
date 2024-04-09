@@ -123,7 +123,7 @@ function NewRequest({ data, onRequestApproval }) {
 export default function Home() {
 
     const [pendingRequests, setPendingRequests] = useState([]);
-    const { newRequests, setNewRequests } = useNotification();
+    const { newRequests, setNewRequests, setNotifications, setViewed } = useNotification();
     const { auth } = useAuth();
     const { storage } = useFirebase();
     const axiosPrivate = useAxiosPrivate();
@@ -147,8 +147,10 @@ export default function Home() {
         // clean up
         return () => {
             setNewRequests([]);
+            setNotifications([]);
+            setViewed(true);
         }
-    }, [setNewRequests]);
+    }, [setNewRequests, setNotifications, setViewed]);
 
     const removePendingRequestComponent = (requestId) => {
         setPendingRequests(prevPendingRequests => prevPendingRequests.filter(request => request._id !== requestId));

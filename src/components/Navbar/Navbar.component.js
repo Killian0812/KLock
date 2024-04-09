@@ -8,11 +8,12 @@ import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
 import { NavbarData } from './Navbar.data';
 import './Navbar.css';
 import useLogout from '../../hooks/useLogout';
+import NotificationButton from './Notification.component';
 
 function Navbar() {
+
     const [sidebar, setSidebar] = useState(false);
     const showSidebar = () => setSidebar(!sidebar);
-
     const logout = useLogout();
 
     const navbarItems = [];
@@ -60,15 +61,14 @@ function Navbar() {
     return (
         <>
             <IconContext.Provider value={{ color: '#fff' }}>
+
                 <div className='navbar'>
                     <Link className='menu-bars'>
                         <FaIcons.FaBars onClick={showSidebar} />
                     </Link>
-                    <div className='nav-text' style={{ position: "absolute", marginLeft: "77%" }}>
-                        <Link>
-                            <FaIcons.FaBell style={{ paddingBottom: "10px" }} />
-                        </Link>
-                    </div>
+                    
+                    <NotificationButton></NotificationButton>
+
                     <div className='nav-text' style={{ position: "absolute", marginLeft: "85%" }}>
                         <Link to="/admin">
                             <FaIcons.FaUsersCog style={{ paddingBottom: "10px" }} />
@@ -76,6 +76,7 @@ function Navbar() {
                         </Link>
                     </div>
                 </div>
+
                 <nav className={sidebar ? 'nav-menu active' : 'nav-menu'}>
                     <ul className='nav-menu-items' onClick={showSidebar}>
                         <li className='navbar-toggle'>
@@ -88,6 +89,7 @@ function Navbar() {
                         }
                     </ul>
                 </nav>
+                
             </IconContext.Provider >
         </>
     );

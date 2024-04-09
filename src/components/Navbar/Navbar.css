@@ -87,3 +87,23 @@ svg {
 span {
   margin-left: 16px;
 }
+
+.notification-list {
+  width: 240px;
+}
+
+.notification-item {
+  margin-bottom: 15px;
+}
+
+.popper-wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-height: min((100vh - 96px) - 60px, 734px);
+  min-height: 100px;
+  padding: 9px 0 0 9px;
+  border-radius: 8px;
+  background: #232323;
+  box-shadow: rgb(0 0 0) 0px 2px 12px;
+}

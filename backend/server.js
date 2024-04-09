@@ -47,9 +47,6 @@ app.use('/admin', verifyJWT, adminRouter);
 
 app.use('/guest', guestRouter);
 
-// init firebase, firestore
-const Firestore = require('./firebase/firebase');
-
 // server host
 const port = process.env.PORT;
 const ip = process.env.IP;
