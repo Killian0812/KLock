@@ -23,6 +23,7 @@ const handleLogout = async (req, res) => {
             existingUser.refreshToken = null;
             await existingUser.save();
         } catch (error) {
+            console.log(error);
             return res.status(500).send("Error removing user's refresh token");
         }
         res.clearCookie('jwt', { httpOnly: true, sameSite: 'None', secure: true, maxAge: 24 * 60 * 60 * 1000 });

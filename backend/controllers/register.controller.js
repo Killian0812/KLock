@@ -3,15 +3,22 @@ var User = require('../models/user.model');
 
 const handleRegister = async (req, res) => {
     const username = req.body.username;
+    const email = req.body.email;
+    const fullname = req.body.fullname;
     const password = req.body.password;
 
     console.log("Someone registering");
 
-    const existingUser = await User.findOne({ username });
+    let existingUser = await User.findOne({ username });
     if (existingUser) {
         res.status(409).json("Username taken");
-    }
-    else {
+    } else {
+
+        existingUser = await User.findOne({ email });
+        if (existingUser) {
+            res.status(409).json("Email taken");
+        }
+
         // Generate a salt
         bcrypt.genSalt(10, (err, salt) => {
             if (err) {
@@ -26,7 +33,10 @@ const handleRegister = async (req, res) => {
                 else {
                     console.log('Hashed Password:', hashedPassword);
 
-                    const newUser = new User({ username: username, password: hashedPassword });
+                    const newUser = new User({
+                        username: username, email: email,
+                        fullname: fullname, password: hashedPassword
+                    });
                     newUser.save()
                         .then(() => res.status(200).json("Account registered"))
                         .catch(err => res.status(400).json(err));

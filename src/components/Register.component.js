@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 const USERNAME_REGEX = /^[a-zA-Z0-9-_]{3,21}$/;
+const EMAIL_REGEX = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
 const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d@$!%*?&/~._-]{6,24}$/;
 const REGISTER_URL = '/register';
 
@@ -15,16 +16,21 @@ const Register = () => {
 
     // required inputs
     const [username, setUsername] = useState('');
+    const [fullname, setFullname] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [matchPassword, setMatchPassword] = useState('');
 
     // check valid inputs (with regex)
     const [validUsername, setValidUsername] = useState(false);
+    const [validFullname, setValidFullname] = useState(false);
+    const [validEmail, setValidEmail] = useState(false);
     const [validPassword, setValidPassword] = useState(false);
     const [validMatch, setValidMatch] = useState(false);
 
     // check if focusing on input field, use for rendering instruction
     const [usernameFocus, setUsernameFocus] = useState(false);
+    const [emailFocus, setEmailFocus] = useState(false);
     const [passwordFocus, setPasswordFocus] = useState(false);
     const [matchFocus, setMatchFocus] = useState(false);
 
@@ -43,6 +49,14 @@ const Register = () => {
     }, [username])
 
     useEffect(() => {
+        setValidFullname(fullname !== "");
+    }, [fullname])
+
+    useEffect(() => {
+        setValidEmail(EMAIL_REGEX.test(email));
+    }, [email])
+
+    useEffect(() => {
         setValidPassword(PASSWORD_REGEX.test(password));
         setValidMatch(password === matchPassword);
     }, [password, matchPassword])
@@ -56,13 +70,14 @@ const Register = () => {
         // if button enabled with JS hack
         const v1 = USERNAME_REGEX.test(username);
         const v2 = PASSWORD_REGEX.test(password);
-        if (!v1 || !v2) {
+        const v3 = EMAIL_REGEX.test(email);
+        if (!v1 || !v2 || !v3) {
             setErrMsg("Invalid Entry");
             return;
         }
         try {
             const response = await axios.post(REGISTER_URL,
-                JSON.stringify({ username, password }),
+                JSON.stringify({ username, password, email, fullname }),
                 {
                     headers: { 'Content-Type': 'application/json' },
                     withCredentials: true
@@ -74,6 +89,8 @@ const Register = () => {
             setSuccess(true);
             // clear state and controlled inputs (by assigned value attr) 
             setUsername('');
+            setEmail('');
+            setFullname('');
             setPassword('');
             setMatchPassword('');
         } catch (error) {
@@ -128,6 +145,26 @@ const Register = () => {
                                 Username must consist of letters (both uppercase and lowercase) and digits only. <br />
                                 Special characters allowed: "- _".
                             </p>
+
+                            <label htmlFor="email">Email:
+                                <FontAwesomeIcon icon={faCheck} className={validEmail ? "valid" : "hide"} />
+                                <FontAwesomeIcon icon={faTimes} className={validEmail || !username ? "hide" : "invalid"} />
+                            </label>
+                            <input type="text" id="email"
+                                onChange={(e) => setEmail(e.target.value)} value={email} required
+                                onFocus={() => setEmailFocus(true)} onBlur={() => setEmailFocus(false)}
+                            />
+                            <p className={emailFocus && email ? "instructions" : "offscreen"}>
+                                <FontAwesomeIcon icon={faInfoCircle} />
+                                Must be a valid email address.<br />
+                            </p>
+
+                            <label htmlFor="fullname">Fullname:
+                                <FontAwesomeIcon icon={faCheck} className={validFullname ? "valid" : "hide"} />
+                                <FontAwesomeIcon icon={faTimes} className={validFullname || !username ? "hide" : "invalid"} />
+                            </label>
+                            <input type="text" id="fullname"
+                                onChange={(e) => setFullname(e.target.value)} value={fullname} required />
 
                             <label htmlFor="password">Password:
                                 <FontAwesomeIcon icon={faCheck} className={validPassword ? "valid" : "hide"} />

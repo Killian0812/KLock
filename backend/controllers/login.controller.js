@@ -6,7 +6,7 @@ const handleLogin = async (req, res) => {
     const username = req.body.username;
     const password = req.body.password;
     console.log("Website login");
-    
+
     const existingUser = await User.findOne({ username });
     if (!existingUser) {
         res.status(400).json("User Not Found");
@@ -20,6 +20,7 @@ const handleLogin = async (req, res) => {
                     {
                         "UserInfo": {
                             "username": existingUser.username,
+                            "email": existingUser.email,
                             "roles": existingUser.roles
                         }
                     },
@@ -38,13 +39,17 @@ const handleLogin = async (req, res) => {
                     await existingUser.save();
                 } catch (error) {
                     console.log("Error saving refreshToken to DB");
+                    console.log(error);
                 }
 
                 console.log("Login successful");
                 // sent refresh token as http cookie, last for 1d
                 res.cookie('jwt', refreshToken, { httpOnly: true, sameSite: 'None', secure: true, maxAge: 24 * 60 * 60 * 1000 });
-                res.status(200).json({ accessToken, roles: existingUser.roles });
-            } 
+                res.status(200).json({
+                    accessToken, fullname: existingUser.fullname,
+                    email: existingUser.email, roles: existingUser.roles
+                });
+            }
             else {
                 res.status(400).json("Wrong Password");
             }
@@ -58,7 +63,7 @@ const handleMobileLogin = async (req, res) => {
     const username = req.body.username;
     const password = req.body.password;
     console.log("Mobile login");
-    
+
     const existingUser = await User.findOne({ username });
     if (!existingUser) {
         res.status(400).json("User Not Found");
@@ -72,6 +77,7 @@ const handleMobileLogin = async (req, res) => {
                     {
                         "UserInfo": {
                             "username": existingUser.username,
+                            "email": existingUser.email,
                             "roles": existingUser.roles
                         }
                     },
@@ -95,8 +101,11 @@ const handleMobileLogin = async (req, res) => {
                 console.log("Login successful");
                 // sent refresh token as http cookie, last for 1d
                 res.cookie('jwt', refreshToken, { httpOnly: true, sameSite: 'None', secure: true, maxAge: 24 * 60 * 60 * 1000 });
-                res.status(200).json({ accessToken, roles: existingUser.roles });
-            } 
+                res.status(200).json({
+                    accessToken, fullname: existingUser.fullname,
+                    email: existingUser.email, roles: existingUser.roles
+                });
+            }
             else {
                 res.status(400).json("Wrong Password");
             }

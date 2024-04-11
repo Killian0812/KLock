@@ -6,7 +6,7 @@ import Layout from './components/Layout.component';
 import Authenticate from './components/Authenticate.component';
 import Authorize from './components/Authorize.component';
 import Home from './pages/Home.page';
-import Profile from './pages/Profile.page';
+import Profile from './pages/profile_page/Profile.page';
 import Rooms from './pages/Rooms.page';
 import RoomDetail from './pages/RoomDetail.page';
 import Settings from './pages/Settings.page';
@@ -32,7 +32,7 @@ function App() {
               {/* chat user role - authenticate only */}
               <Route path="/dashboard" element={<Layout />}>
                 <Route index element={<Home />} />
-                <Route path="profile" element={<Profile />} />
+                <Route path="profile/:tab?" element={<Profile />} /> { /*Optional param*/}
                 <Route path="rooms" element={<Rooms />} />
                 <Route path="rooms/:roomId" element={<RoomDetail />} />
                 <Route path="settings" element={<Settings />} />

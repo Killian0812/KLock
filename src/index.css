@@ -117,11 +117,13 @@ label>svg {
 }
 
 .valid {
+  margin-top: -12px;
   color: limegreen;
   margin-left: 0.25rem;
 }
 
 .invalid {
+  margin-top: -12px;
   color: red;
   margin-left: 0.25rem;
 }
@@ -280,4 +282,76 @@ th:hover {
 
 .dt-column-order::before {
   margin-bottom: 8px;
+}
+
+.tabs {
+  margin-top: 20px;
+}
+
+.tabs-wrapper {
+  margin-top: 30px;
+}
+
+.tabs button {
+  background-color: #363636;
+  border: none;
+  cursor: pointer;
+  padding: 10px 20px;
+  font-size: large;
+  border-radius: 0%;
+  transition: background-color 0.3s;
+  border-right: 2px solid #ccc;
+}
+
+.tabs button:last-child {
+  border-right: none;
+}
+
+.tabs button:hover {
+  background-color: #ddd;
+  color: #000;
+}
+
+.tabs button.btn-active {
+  background-color: #767676;
+  color: #fff;
+}
+
+.tabs-wrapper .input-group label {
+  display: inline-block;
+  font-size: large;
+  width: 200px;
+}
+
+.tabs-wrapper .input-group .input-error {
+  padding-top: 25px;
+  color: rgb(255, 44, 44);
+  font-size: large;
+}
+
+.tabs-wrapper .input-group .input-success {
+  padding-top: 25px;
+  color: rgb(52, 255, 133);
+  font-size: large;
+}
+
+.tabs-wrapper .input-group input,
+.tabs-wrapper .input-group input[type="password"] {
+  font-size: large;
+  width: 280px;
+  padding: 5px;
+  border-radius: 7px;
+}
+
+.tabs-wrapper .input-group button {
+  font-size: large;
+  height: 40px;
+  width: 200px;
+  padding: 0;
+  border-radius: 10px;
+}
+
+.input-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }

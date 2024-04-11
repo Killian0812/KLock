@@ -39,18 +39,29 @@ const handleRefreshToken = async (req, res) => {
             else if (existingUser.username !== decoded.username)
                 return res.status(401).send("Invalid refresh token");
 
+            const username = existingUser.username;
+            const fullname = existingUser.fullname;
+            const email = existingUser.email;
             const roles = existingUser.roles;
+
+            console.log(existingUser.email);
+
             const newAccessToken = JWT.sign(
                 {
                     "UserInfo": {
-                        "username": existingUser.username,
-                        "roles": existingUser.roles
+                        "username": username,
+                        "email": email,
+                        "roles": roles
                     }
                 },
                 process.env.ACCESS_TOKEN_SECRET,
                 { expiresIn: '8h' }
             );
-            res.json({ username: existingUser.username, roles: roles, accessToken: newAccessToken });
+
+            return res.status(200).json({
+                username: username, fullname: fullname, email: email,
+                roles: roles, accessToken: newAccessToken
+            });
         }
     );
 }
