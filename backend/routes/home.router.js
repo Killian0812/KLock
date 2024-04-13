@@ -10,7 +10,9 @@ router.get('/rooms', verifyRole("USER"), homeController.handleGetRooms);
 
 router.get('/roomDetails', homeController.handleGetRoomDetails);
 
-router.get('/roomEntries', homeController.handleGetRoomEntries)
+router.get('/roomEntries', verifyRole("USER"), homeController.handleGetRoomEntries)
+
+router.post('/roomUnregister', homeController.handleRoomUnregister);
 
 router.get('/pendingRequests', verifyRole("USER"), homeController.handleGetPendingRequests)
 

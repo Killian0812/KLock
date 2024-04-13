@@ -1,15 +1,22 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
+import * as AlertDialog from '@radix-ui/react-alert-dialog';
 import $ from 'jquery';
 import 'datatables.net-dt/js/dataTables.dataTables.min.js';
 import 'datatables.net-dt/css/dataTables.dataTables.min.css';
+import '../radix-ui.css';
+import { Toaster, toast } from 'alert';
+
 import useFirebase from '../hooks/useFirebase';
+import useAuth from '../hooks/useAuth';
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
 import { ref, getDownloadURL } from "firebase/storage";
 import { formatDate } from '../tools/date.formatter';
 
 const RoomDetail = () => {
     const { roomId } = useParams();
+    const { auth } = useAuth();
+    const navigate = useNavigate();
     const [roomDetails, setRoomDetails] = useState({});
     const [roomEntries, setRoomEntries] = useState([]);
     const { storage } = useFirebase();
@@ -62,6 +69,17 @@ const RoomDetail = () => {
         );
     }).reverse();
 
+    const handleRoomUnregiser = async () => {
+        axiosPrivate.post(`/home/roomUnregister`, { roomId: roomId, username: auth.username })
+            .then(() => {
+                navigate("/dashboard/rooms", { replace: true });
+            })
+            .catch(() => {
+                toast('Unexpected error');
+                console.log("Error unregistering as manager");
+            })
+    }
+
     return (
         <>
             <div className='RoomDetails'>
@@ -87,7 +105,35 @@ const RoomDetail = () => {
                         </tbody>
                     </table>
                 </section>
+                <AlertDialog.Root>
+                    <AlertDialog.Trigger asChild>
+                        <button className='unsubcribe-btn' >Unregister as Manager</button>
+                    </AlertDialog.Trigger>
+                    <AlertDialog.Portal>
+                        <AlertDialog.Overlay className="AlertDialogOverlay" />
+                        <AlertDialog.Content className="AlertDialogContent">
+                            <AlertDialog.Title className="AlertDialogTitle">Are you absolutely sure?</AlertDialog.Title>
+                            <br></br>
+                            <AlertDialog.Description className="AlertDialogDescription">
+                                This action cannot be undone by yourself.
+                                <br></br>
+                                You will no longer be able to approve incoming entry
+                                requests as well as view entry list of this room.
+                            </AlertDialog.Description>
+                            <div style={{ display: 'flex', gap: 25, justifyContent: 'flex-end' }}>
+                                <AlertDialog.Cancel asChild>
+                                    <button className="Button mauve">Cancel</button>
+                                </AlertDialog.Cancel>
+                                <AlertDialog.Action asChild>
+                                    <button className="Button red" onClick={() => { handleRoomUnregiser() }}>Yes, confirm action</button>
+                                </AlertDialog.Action>
+                            </div>
+                        </AlertDialog.Content>
+                    </AlertDialog.Portal>
+                </AlertDialog.Root>
             </div>
+            {/* toast for error msg */}
+            <Toaster position='top-right'/>
         </>
     );
 };

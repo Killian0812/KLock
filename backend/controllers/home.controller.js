@@ -44,6 +44,34 @@ async function handleGetRoomEntries(req, res) {
     return res.status(200).json(entries);
 }
 
+async function handleRoomUnregister(req, res) {
+    const roomId = req.body.roomId;
+    const username = req.body.username;
+    if (!roomId || !username)
+        return res.sendStatus(500);
+    console.log(`Removing manager ${username} for room ${roomId}`);
+    const [room, user] = await Promise.all([
+        Room.findById(roomId),
+        User.findOne({ username: username })
+    ]);
+    if (!room || !user)
+        return res.sendStatus(500);
+    else {
+
+        // remove room from user's rooms
+        user.room = user.room.filter(id => id.toString() !== roomId);
+
+        // remove user from room's managers
+        room.managers = room.managers.filter(id => id.toString() !== user._id.toString());
+
+        Promise.all([user.save(), room.save()]).then(() => {
+            return res.sendStatus(200);
+        }).catch(() => {
+            return res.sendStatus(500);
+        })
+    }
+}
+
 async function handleGetPendingRequests(req, res) {
     console.log("Quering pending request");
     const user = await User.findOne({ username: req.query.username });
@@ -143,7 +171,7 @@ async function handleChangePassword(req, res) {
 
 module.exports = {
     handleGetUserInfo, handleUpdateExpoPushToken,
-    handleGetRooms, handleGetRoomDetails, handleGetRoomEntries,
+    handleGetRooms, handleGetRoomDetails, handleGetRoomEntries, handleRoomUnregister,
     handleGetPendingRequests, handleApproveEntry,
     handleUpdateUserInfo, handleChangePassword
 };
