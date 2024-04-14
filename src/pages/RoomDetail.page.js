@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import * as AlertDialog from '@radix-ui/react-alert-dialog';
+import { Toaster, toast } from 'alert';
 import $ from 'jquery';
 import 'datatables.net-dt/js/dataTables.dataTables.min.js';
 import 'datatables.net-dt/css/dataTables.dataTables.min.css';
 import '../radix-ui.css';
-import { Toaster, toast } from 'alert';
 
 import useFirebase from '../hooks/useFirebase';
 import useAuth from '../hooks/useAuth';
@@ -72,11 +72,12 @@ const RoomDetail = () => {
     const handleRoomUnregiser = async () => {
         axiosPrivate.post(`/home/roomUnregister`, { roomId: roomId, username: auth.username })
             .then(() => {
+                toast(`You are no longer ${roomDetails.name}'s manager`);
                 navigate("/dashboard/rooms", { replace: true });
             })
-            .catch(() => {
+            .catch((err) => {
                 toast('Unexpected error');
-                console.log("Error unregistering as manager");
+                console.log("Error unregistering as manager:", err);
             })
     }
 
@@ -133,7 +134,7 @@ const RoomDetail = () => {
                 </AlertDialog.Root>
             </div>
             {/* toast for error msg */}
-            <Toaster position='top-right'/>
+            <Toaster position='top-right' />
         </>
     );
 };

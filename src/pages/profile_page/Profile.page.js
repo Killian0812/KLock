@@ -2,6 +2,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 
 import ProfileTab from "./tabs/Profile.tab";
 import ChangePasswordTab from "./tabs/ChangePassword.tab";
+import RoomRegisterTab from './tabs/RoomRegister.tab';
 
 export default function Profile() {
     let { tab } = useParams();
@@ -30,11 +31,7 @@ export default function Profile() {
 
                         {tab === "profileTab" && <ProfileTab></ProfileTab>}
 
-                        {tab === "roomRegisterTab" && (
-                            <div>
-                                Room register
-                            </div>
-                        )}
+                        {tab === "roomRegisterTab" && <RoomRegisterTab></RoomRegisterTab>}
 
                         {tab === "changePasswordTab" && <ChangePasswordTab></ChangePasswordTab>}
 

@@ -3,7 +3,7 @@ require('dotenv').config();
 
 const verifyJWT = (req, res, next) => {
 
-    console.log("verifying JWTs");
+    // console.log("verifying JWTs");
     // extracing token from header 
     const authHeader = req.headers['authorization'] || req.headers['Authorization']; // 'Authorization': Bearer token
     const tokenInAuthHeader = authHeader?.split(' ')[1];
@@ -22,7 +22,7 @@ const verifyJWT = (req, res, next) => {
             }
             req.username = decoded.UserInfo.username;
             req.roles = decoded.UserInfo.roles;
-            console.log("JWT Verified");
+            // console.log("JWT Verified");
             next();
         }
     );

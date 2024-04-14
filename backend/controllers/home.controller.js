@@ -30,10 +30,18 @@ async function handleGetRooms(req, res) {
     return res.status(200).json(rooms);
 }
 
+async function handleFindRooms(req, res) {
+    console.log("Finding rooms");
+    const keyword = req.query.keyword;
+    // console.log(keyword);
+    const rooms = await Room.find({ "name": { $regex: keyword, $options: 'i' } });
+    return res.status(200).json(rooms);
+}
+
 async function handleGetRoomDetails(req, res) {
     console.log("Quering room detail with id:" + req.query.id);
     const room = await Room.findOne({ _id: req.query.id });
-    console.log(room);
+    // console.log(room);
     return res.status(200).json(room);
 }
 
@@ -71,6 +79,38 @@ async function handleRoomUnregister(req, res) {
         })
     }
 }
+
+async function handleRoomRegister(req, res) {
+    const username = req.query.username;
+    const requestedRooms = req.body;
+
+    if (!requestedRooms || !username)
+        return res.sendStatus(500);
+    console.log(`Registering ${username} as manager`);
+    try {
+        const user = await User.findOne({ username: username });
+        let tmpUserRooms = user.room; 
+        for (const requestedRoom of requestedRooms) {
+            if (!tmpUserRooms.includes(requestedRoom._id)) {
+                let room = await Room.findById(requestedRoom._id);
+                if (!room) {
+                    console.log("Error: no matched room found");
+                    return res.sendStatus(500);
+                }
+                room.managers.push(user._id);
+                await room.save();
+                tmpUserRooms.push(room._id);
+            }
+        }
+        user.room = tmpUserRooms;
+        await user.save();
+        return res.sendStatus(200);
+    } catch (error) {
+        console.log("Error registering as manager", error);
+        return res.sendStatus(500);
+    }
+}
+
 
 async function handleGetPendingRequests(req, res) {
     console.log("Quering pending request");
@@ -171,7 +211,8 @@ async function handleChangePassword(req, res) {
 
 module.exports = {
     handleGetUserInfo, handleUpdateExpoPushToken,
-    handleGetRooms, handleGetRoomDetails, handleGetRoomEntries, handleRoomUnregister,
+    handleFindRooms, handleGetRooms, handleGetRoomDetails, handleGetRoomEntries,
+    handleRoomUnregister, handleRoomRegister,
     handleGetPendingRequests, handleApproveEntry,
     handleUpdateUserInfo, handleChangePassword
 };

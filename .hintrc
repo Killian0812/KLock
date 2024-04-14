@@ -15,7 +15,8 @@
       "default",
       {
         "ignore": [
-          "inset"
+          "inset",
+          "width: fit-content"
         ]
       }
     ]

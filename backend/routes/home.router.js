@@ -6,6 +6,8 @@ router.get('/getUserInfo/:username', verifyRole("USER", "ADMIN"), homeController
 
 router.post('/updateExpoPushToken/:username', verifyRole("USER", "ADMIN"), homeController.handleUpdateExpoPushToken)
 
+router.get('/findRooms', verifyRole("USER"), homeController.handleFindRooms);
+
 router.get('/rooms', verifyRole("USER"), homeController.handleGetRooms);
 
 router.get('/roomDetails', homeController.handleGetRoomDetails);
@@ -13,6 +15,8 @@ router.get('/roomDetails', homeController.handleGetRoomDetails);
 router.get('/roomEntries', verifyRole("USER"), homeController.handleGetRoomEntries)
 
 router.post('/roomUnregister', homeController.handleRoomUnregister);
+
+router.post('/roomRegister', homeController.handleRoomRegister);
 
 router.get('/pendingRequests', verifyRole("USER"), homeController.handleGetPendingRequests)
 
