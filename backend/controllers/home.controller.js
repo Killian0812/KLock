@@ -175,8 +175,10 @@ async function handleChangePassword(req, res) {
     const currentHashedPassword = user.password;
     const currentPassword = req.body.currentPassword;
     const newPassword = req.body.newPassword;
+
+    // console.log(currentHashedPassword, currentPassword);
     bcrypt.compare(currentPassword, currentHashedPassword, function (err, result) {
-        if (err) {
+        if (err || !result) {
             // console.log(err);
             return res.status(400).json("Wrong password");
         }
@@ -195,7 +197,7 @@ async function handleChangePassword(req, res) {
                             return res.status(500).json("Error hashing password: " + err);
                         }
                         else {
-                            console.log('Hashed Password:', newHashedPassword);
+                            // console.log('Hashed Password:', newHashedPassword);
 
                             user.password = newHashedPassword;
                             user.save()

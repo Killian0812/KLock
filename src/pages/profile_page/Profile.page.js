@@ -22,7 +22,7 @@ export default function Profile() {
                         <button className={tab === "profileTab" ? "btn-active" : ""}
                             onClick={() => handleTabChange("profileTab")}>Profile</button>
                         <button className={tab === "roomRegisterTab" ? "btn-active" : ""}
-                            onClick={() => handleTabChange("roomRegisterTab")}>Register for Room Manager</button>
+                            onClick={() => handleTabChange("roomRegisterTab")}>Register as Room Manager</button>
                         <button className={tab === "changePasswordTab" ? "btn-active" : ""}
                             onClick={() => handleTabChange("changePasswordTab")}>Change Password</button>
                     </div>

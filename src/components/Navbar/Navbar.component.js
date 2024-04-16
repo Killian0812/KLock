@@ -31,7 +31,7 @@ function Navbar() {
     const logoutConfirm = () => {
         confirmAlert({
             title: 'Logout confirmation',
-            message: 'Do you want to logout?',
+            message: 'Are you sure you want to log out?',
             buttons: [
                 {
                     label: 'Yes',

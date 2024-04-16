@@ -43,7 +43,7 @@ const handleMobileLogout = async (req, res) => {
     {
         return res.sendStatus(204);
     } else { // if user exists
-        console.log(existingUser);
+        // console.log(existingUser);
         try {
             existingUser.mobileRefreshToken = null;
             await existingUser.save();

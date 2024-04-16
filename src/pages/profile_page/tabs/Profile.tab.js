@@ -10,7 +10,7 @@ const EMAIL_REGEX = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
 const FULLNAME_REGEX = /^(?!\d+$).+$/;
 
 function ProfileTab() {
-    const { auth } = useAuth();
+    const { auth, setAuth } = useAuth();
     const [initialEmail] = useState(auth.email);
     const [email, setEmail] = useState(auth.email);
     const [initialFullname] = useState(auth.fullname);
@@ -27,6 +27,10 @@ function ProfileTab() {
         setChangesMade(emailChanged || fullnameChanged);
     }, [email, initialEmail, fullname, initialFullname]);
 
+    useEffect(() => {
+        return setMsg('');
+    }, []);
+
     const handleSubmit = () => {
         const v1 = EMAIL_REGEX.test(email);
         let trimmedFullname = fullname.replace(/\s+/g, ' ');
@@ -37,6 +41,7 @@ function ProfileTab() {
             axiosPrivate.post("/home/updateUserInfo", { username: auth.username, fullname, email })
                 .then(() => {
                     setStatus("success");
+                    setAuth({ ...auth, fullname: fullname, email: email })
                     setMsg("Success: Information have been updated");
                 }).catch(() => {
                     setStatus("error");
