@@ -23,7 +23,7 @@ async function handleUpdateExpoPushToken(req, res) {
 
 async function handleGetRooms(req, res) {
     console.log("Quering rooms");
-    const user = await User.findOne({ username: req.query.username });
+    const user = await User.findOne({ username: req.username });
     const query = { _id: { $in: user?.room } };
     const rooms = await Room.find(query);
     // console.log(rooms);
@@ -54,7 +54,7 @@ async function handleGetRoomEntries(req, res) {
 
 async function handleRoomUnregister(req, res) {
     const roomId = req.body.roomId;
-    const username = req.body.username;
+    const username = req.username;
     if (!roomId || !username)
         return res.sendStatus(500);
     console.log(`Removing manager ${username} for room ${roomId}`);
@@ -81,7 +81,7 @@ async function handleRoomUnregister(req, res) {
 }
 
 async function handleRoomRegister(req, res) {
-    const username = req.query.username;
+    const username = req.username;
     const requestedRooms = req.body;
 
     if (!requestedRooms || !username)
@@ -89,7 +89,7 @@ async function handleRoomRegister(req, res) {
     console.log(`Registering ${username} as manager`);
     try {
         const user = await User.findOne({ username: username });
-        let tmpUserRooms = user.room; 
+        let tmpUserRooms = user.room;
         for (const requestedRoom of requestedRooms) {
             if (!tmpUserRooms.includes(requestedRoom._id)) {
                 let room = await Room.findById(requestedRoom._id);
@@ -111,10 +111,9 @@ async function handleRoomRegister(req, res) {
     }
 }
 
-
 async function handleGetPendingRequests(req, res) {
     console.log("Quering pending request");
-    const user = await User.findOne({ username: req.query.username });
+    const user = await User.findOne({ username: req.username });
     const roomIds = user.room;
     // replace ref with actual room object 
     PendingRequest.find({ room: { $in: roomIds } }).populate('room').then((pendingRequests) => {
@@ -158,7 +157,7 @@ async function handleApproveEntry(req, res) {
 
 async function handleUpdateUserInfo(req, res) {
     console.log("Someone updating info");
-    var user = await User.findOne({ username: req.body.username });
+    var user = await User.findOne({ username: req.username });
     const newFullname = req.body.fullname;
     const newEmail = req.body.email;
     if (newFullname !== user.fullname || newEmail !== user.email) {
@@ -171,7 +170,7 @@ async function handleUpdateUserInfo(req, res) {
 
 async function handleChangePassword(req, res) {
     console.log("Someone changing password");
-    var user = await User.findOne({ username: req.body.username });
+    var user = await User.findOne({ username: req.username });
     const currentHashedPassword = user.password;
     const currentPassword = req.body.currentPassword;
     const newPassword = req.body.newPassword;

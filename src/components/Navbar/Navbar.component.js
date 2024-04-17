@@ -8,6 +8,7 @@ import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
 import { NavbarData } from './Navbar.data';
 import './Navbar.css';
 import useLogout from '../../hooks/useLogout';
+import useNotification from '../../hooks/useNotification';
 import NotificationButton from './Notification.component';
 
 function Navbar() {
@@ -15,13 +16,19 @@ function Navbar() {
     const [sidebar, setSidebar] = useState(false);
     const showSidebar = () => setSidebar(!sidebar);
     const logout = useLogout();
+    const { setNewRequests } = useNotification();
 
     const navbarItems = [];
     for (let i = 0; i < NavbarData.length - 1; i++) {
         const nav = NavbarData[i];
         navbarItems.push(
             <li key={i} className={nav.cName}>
-                <Link to={"/dashboard" + nav.path}>
+                <Link to={"/dashboard" + nav.path} onClick={() => {
+                    if (nav.path !== '')
+                        return;
+                    if (window.location.pathname !== "/dashboard")
+                        setNewRequests([]);
+                }}>
                     {nav.icon}
                     <span>{nav.title}</span>
                 </Link>
@@ -66,7 +73,7 @@ function Navbar() {
                     <Link className='menu-bars'>
                         <FaIcons.FaBars onClick={showSidebar} />
                     </Link>
-                    
+
                     <NotificationButton></NotificationButton>
 
                     <div className='nav-text' style={{ position: "absolute", marginLeft: "85%" }}>
@@ -89,7 +96,7 @@ function Navbar() {
                         }
                     </ul>
                 </nav>
-                
+
             </IconContext.Provider >
         </>
     );

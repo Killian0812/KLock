@@ -11,9 +11,9 @@ const FULLNAME_REGEX = /^(?!\d+$).+$/;
 
 function ProfileTab() {
     const { auth, setAuth } = useAuth();
-    const [initialEmail] = useState(auth.email);
+    const [initialEmail, setInitialEmail] = useState(auth.email);
     const [email, setEmail] = useState(auth.email);
-    const [initialFullname] = useState(auth.fullname);
+    const [initialFullname, setInitialFullname] = useState(auth.fullname);
     const [fullname, setFullname] = useState(auth.fullname);
     const [changesMade, setChangesMade] = useState(false);
     const [msg, setMsg] = useState("");
@@ -38,10 +38,12 @@ function ProfileTab() {
         // console.log(`Email test ${v1}, Name test ${v2}`);
         setFullname(trimmedFullname);
         if (v1 && v2) {
-            axiosPrivate.post("/home/updateUserInfo", { username: auth.username, fullname, email })
+            axiosPrivate.post("/home/updateUserInfo", { fullname, email })
                 .then(() => {
                     setStatus("success");
-                    setAuth({ ...auth, fullname: fullname, email: email })
+                    setAuth({ ...auth, fullname: fullname, email: email });
+                    setInitialEmail(email);
+                    setInitialFullname(fullname);
                     setMsg("Success: Information have been updated");
                 }).catch(() => {
                     setStatus("error");

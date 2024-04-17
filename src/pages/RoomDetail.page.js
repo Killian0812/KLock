@@ -8,14 +8,12 @@ import 'datatables.net-dt/css/dataTables.dataTables.min.css';
 import '../radix-ui.css';
 
 import useFirebase from '../hooks/useFirebase';
-import useAuth from '../hooks/useAuth';
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
 import { ref, getDownloadURL } from "firebase/storage";
 import { formatDate } from '../tools/date.formatter';
 
 const RoomDetail = () => {
     const { roomId } = useParams();
-    const { auth } = useAuth();
     const navigate = useNavigate();
     const [roomDetails, setRoomDetails] = useState({});
     const [roomEntries, setRoomEntries] = useState([]);
@@ -70,7 +68,7 @@ const RoomDetail = () => {
     }).reverse();
 
     const handleRoomUnregiser = async () => {
-        axiosPrivate.post(`/home/roomUnregister`, { roomId: roomId, username: auth.username })
+        axiosPrivate.post(`/home/roomUnregister`, { roomId: roomId })
             .then(() => {
                 toast(`You are no longer ${roomDetails.name}'s manager`);
                 navigate("/dashboard/rooms", { replace: true });

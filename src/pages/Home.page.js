@@ -130,7 +130,7 @@ export default function Home() {
 
     useEffect(() => {
         // fetch all pending requests from database
-        axiosPrivate.get(`/home/pendingRequests?username=${auth.username}`).then((res) => {
+        axiosPrivate.get(`/home/pendingRequests`).then((res) => {
             if (res.data)
                 setPendingRequests(res.data);
         })

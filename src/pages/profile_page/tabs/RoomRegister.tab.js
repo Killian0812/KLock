@@ -7,7 +7,6 @@ import { Toaster, toast } from 'alert';
 
 import '../../../radix-ui.css';
 import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
-import useAuth from '../../../hooks/useAuth';
 
 function SelectedRoom({ room, handleClick }) {
     return (
@@ -29,7 +28,6 @@ function RoomRegisterTab() {
     const [selectedRooms, setSelectedRooms] = useState([]);
 
     const axiosPrivate = useAxiosPrivate();
-    const { auth } = useAuth();
 
     useEffect(() => {
         if (searchRef.current !== undefined)
@@ -68,7 +66,7 @@ function RoomRegisterTab() {
     }
 
     const handleSubmit = () => {
-        axiosPrivate.post(`/home/roomRegister?username=${auth.username}`, selectedRooms)
+        axiosPrivate.post(`/home/roomRegister`, selectedRooms)
             .then(() => {
                 toast(`Request sent to Admin`);
                 setSelectedRooms([]);
