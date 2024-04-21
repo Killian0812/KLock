@@ -11,8 +11,8 @@ import Rooms from './pages/Rooms.page';
 import RoomDetail from './pages/RoomDetail.page';
 import Settings from './pages/Settings.page';
 import Unauthorized from './components/Unauthorized.component';
-import Admin from './pages/Admin.page';
 import PersistLogin from './components/PersistLogin.component';
+import AdminLayout from './components/AdminLayout.component';
 
 function App() {
 
@@ -39,8 +39,10 @@ function App() {
               </Route>
 
               {/* chat admin role - need authorization */}
-              <Route element={<Authorize allowedRoles={["ADMIN"]} />}> { /*Protected route*/}
-                <Route path='admin' element={<Admin />}></Route>
+              <Route path='/admin' element={<Authorize allowedRoles={["ADMIN"]} />}> { /*Protected route*/}
+                <Route path='dashboard' element={<AdminLayout />}>
+
+                </Route>
               </Route>
 
             </Route>

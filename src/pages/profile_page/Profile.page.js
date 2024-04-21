@@ -14,8 +14,8 @@ export default function Profile() {
     };
 
     return (
-        <div className='Rooms'>
-            <section className="roomsSection">
+        <div className='MainContainer'>
+            <section className="contentSection">
                 <div>
                     <img src="/default_avatar.jpg" width="250" height="250" alt="avatar" style={{ borderRadius: "50%" }} />
                     <div className="tabs">

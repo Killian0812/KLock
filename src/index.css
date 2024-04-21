@@ -186,16 +186,17 @@ label>svg {
   font-size: 30px;
 }
 
-.Rooms {
+.MainContainer {
   display: flex;
   flex-direction: column;
   justify-content: center;
   min-height: 100vh;
   align-items: center;
   padding: 1rem 0.5rem;
+  margin-top: 80px;
 }
 
-.roomsSection {
+.contentSection {
   margin-bottom: 200px;
   border-radius: 20px;
   width: 50%;
@@ -227,7 +228,7 @@ label>svg {
 }
 
 .RoomDetails {
-  margin-top: 20px;
+  margin-top: 100px;
   margin-bottom: 20px;
 }
 

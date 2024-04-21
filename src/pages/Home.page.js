@@ -160,8 +160,8 @@ export default function Home() {
     };
 
     return (
-        <div className='Rooms'>
-            <section className="roomsSection">
+        <div className='MainContainer'>
+            <section className="contentSection">
                 <h1>Pending Entry Request</h1><hr></hr>
                 <div className="roomsList">
                     {/* render new request recieved from web socket */}

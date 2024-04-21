@@ -24,12 +24,6 @@ export const NavbarData = [
     cName: 'nav-text'
   },
   {
-    title: 'Settings',
-    path: '/settings',
-    icon: <IoIcons.IoIosSettings className='nav-icon' />,
-    cName: 'nav-text'
-  },
-  {
     title: 'Logout',
     path: '/logout',
     icon: <IoIcons.IoIosLogOut className='nav-icon' />,

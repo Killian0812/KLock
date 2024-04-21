@@ -23,8 +23,8 @@ export default function Admin() {
     };
 
     return (
-        <div className='Rooms'>
-            <section className="roomsSection">
+        <div className='MainContainer'>
+            <section className="contentSection">
                 <h1>Your rooms</h1><hr></hr>
                 <div className="roomsList">
                     {loading ? <p style={{ color: "white" }}><br></br>Loading...</p> :

@@ -4,10 +4,11 @@
   height: 80px;
   display: flex;
   /* flex-direction: row; */
-  position: relative;
+  position: fixed;
   width: 100vw;
   justify-content: flex-start;
   align-items: center;
+  top: 0
 }
 
 .menu-bars {
