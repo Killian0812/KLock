@@ -34,6 +34,7 @@ const RoomDetail = () => {
         const entriesTable = $('#entries').DataTable({
             columnDefs: [
                 { className: "dt-head-center", targets: [0, 1, 2] },
+                { orderable: false, targets: 0 }
             ],
             order: []
         });

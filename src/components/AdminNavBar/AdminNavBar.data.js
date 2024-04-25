@@ -1,8 +1,8 @@
 import React from 'react';
 import { FaUsersCog } from "react-icons/fa";
 import { BsBuildingFillGear } from "react-icons/bs";
-import { MdSpaceDashboard } from "react-icons/md";
-import { IoIosLogOut, IoIosSettings } from "react-icons/io";
+import { MdSpaceDashboard, MdAddHome } from "react-icons/md";
+import { IoIosLogOut } from "react-icons/io";
 
 export const AdminNavBarData = [
   {
@@ -12,9 +12,9 @@ export const AdminNavBarData = [
     cName: 'nav-text'
   },
   {
-    title: 'Accounts',
-    path: '/accounts',
-    icon: <FaUsersCog className='nav-icon' />,
+    title: 'Add room',
+    path: '/add-room',
+    icon: <MdAddHome className='nav-icon' />,
     cName: 'nav-text'
   },
   {
@@ -24,9 +24,9 @@ export const AdminNavBarData = [
     cName: 'nav-text'
   },
   {
-    title: 'Settings',
-    path: '/settings',
-    icon: <IoIosSettings className='nav-icon' />,
+    title: 'Accounts',
+    path: '/accounts',
+    icon: <FaUsersCog className='nav-icon' />,
     cName: 'nav-text'
   },
   {

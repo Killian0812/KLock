@@ -1,6 +1,7 @@
 @import '@radix-ui/colors/black-alpha.css';
 @import '@radix-ui/colors/mauve.css';
 @import '@radix-ui/colors/green.css';
+@import '@radix-ui/colors/blue.css';
 @import '@radix-ui/colors/red.css';
 @import '@radix-ui/colors/violet.css';
 
@@ -60,6 +61,7 @@
     line-height: 1;
     font-weight: 500;
     height: 35px;
+    margin-top: -5px;
 }
 
 .Button.violet {
@@ -87,6 +89,19 @@
 
 .Button.red:focus {
     box-shadow: 0 0 0 2px var(--red-7);
+}
+
+.Button.blue {
+    background-color: var(--blue-4);
+    color: var(--blue-11);
+}
+
+.Button.blue:hover {
+    background-color: var(--blue-5);
+}
+
+.Button.blue:focus {
+    box-shadow: 0 0 0 2px var(--blue-7);
 }
 
 .Button.green {

@@ -9,10 +9,14 @@ import Home from './pages/Home.page';
 import Profile from './pages/profile_page/Profile.page';
 import Rooms from './pages/Rooms.page';
 import RoomDetail from './pages/RoomDetail.page';
-import Settings from './pages/Settings.page';
 import Unauthorized from './components/Unauthorized.component';
 import PersistLogin from './components/PersistLogin.component';
 import AdminLayout from './components/AdminLayout.component';
+import Dashboard from './pages/Dashboard.page';
+import Accounts from './pages/Accounts.page';
+import AddRoom from './pages/AddRoom.page';
+import Building from './pages/Building.page';
+import EditRoom from './pages/EditRoom.page';
 
 function App() {
 
@@ -35,23 +39,29 @@ function App() {
                 <Route path="profile/:tab?" element={<Profile />} /> { /*Optional param*/}
                 <Route path="rooms" element={<Rooms />} />
                 <Route path="rooms/:roomId" element={<RoomDetail />} />
-                <Route path="settings" element={<Settings />} />
               </Route>
 
               {/* chat admin role - need authorization */}
-              <Route path='/admin' element={<Authorize allowedRoles={["ADMIN"]} />}> { /*Protected route*/}
-                <Route path='dashboard' element={<AdminLayout />}>
 
+              <Route element={<Authorize allowedRoles={["ADMIN"]} />}>
+
+                <Route path='/admin' element={<AdminLayout />}> { /*Protected route*/}
+                  <Route path='dashboard' element={<Dashboard />} />
+                  <Route path='accounts' element={<Accounts />} />
+                  <Route path='building' element={<Building />} />
+                  <Route path="add-room" element={<AddRoom />} />
+                  <Route path="edit-room/:roomId" element={<EditRoom />} />
                 </Route>
+
               </Route>
 
             </Route>
 
           </Route>
-
+          
         </Routes>
       </BrowserRouter>
-    </main>
+    </main >
   );
 }
 
