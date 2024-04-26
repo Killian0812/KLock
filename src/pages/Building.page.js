@@ -67,8 +67,6 @@ const Building = () => {
     );
   });
 
-  console.log('Current', roomsList.length);
-
   useEffect(() => {
     if (rooms?.length <= 0)
       return;
@@ -84,9 +82,9 @@ const Building = () => {
   }, [rooms]);
 
   return (
-    <div className='RoomEntries' style={{ marginTop: '70px' }}>
-      <section className="entriesSection">
-        <h1>Your Building</h1><hr></hr><br></br>
+    <div className='MainContainer'>
+      <section className="contentSection">
+        <h1>Manage Building</h1><hr></hr><br></br>
         <table id='rooms' style={{ width: "100%" }}>
           <thead>
             <tr>

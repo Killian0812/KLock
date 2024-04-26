@@ -9,17 +9,36 @@ async function handleGetRooms(req, res) {
 }
 
 async function handleNewRoom(req, res) {
-    const user = await User.findOne({ username: "Killian0812" });
-    const newRoom = new Room({ name: "Test", mac: "123abc", manager: [user._id] });
-    newRoom.save().then(async (data) => {
-        user.room = [...user.room, data._id];
-        await user.save();
+    const name = req.body.name;
+    const mac = req.body.mac;
+    const managers = req.body.managers;
+
+    let existingRoom = await Room.findOne({ name: name });
+    if (existingRoom)
+        return res.status(400).json({ exist: 0 });
+    else {
+        existingRoom = await Room.findOne({ mac: mac });
+        if (existingRoom)
+            return res.status(400).json({ exist: 1 });
+    }
+
+    const newRoom = new Room({ name: name, mac: mac, managers: [] });
+
+    try {
+        managers.forEach(async (manager) => {
+            newRoom.managers.push(manager._id);
+            // console.log(newRoom.managers);
+            let user = await User.findById(manager._id);
+            user.room.push(newRoom._id);
+            await user.save();
+        });
+        await newRoom.save();
         console.log("New room added");
-        return res.status(200).json("Success");
-    }).catch(err => {
-        console.log(err);
-        return res.status(500);
-    })
+        return res.sendStatus(200);
+    } catch (error) {
+        console.error(error);
+        return res.sendStatus(500);
+    }
 }
 
 async function handleDeleteRoom(req, res) {
@@ -45,4 +64,26 @@ async function handleDeleteRoom(req, res) {
     }
 }
 
-module.exports = { handleNewRoom, handleGetRooms, handleDeleteRoom };
+// async function handleFindUsers(req, res) {
+//     const keyword = req.query.keyword;
+//     const users = await User.find({ "fullname": { $regex: normalizeVietnamesePattern(keyword), $options: 'i' } });
+//     return res.status(200).json(users);
+// }
+
+async function handleGetAllUsers(req, res) {
+    User.find({}).then(users => {
+        return res.status(200).json(users);
+    }).catch((e) => {
+        console.log("Error getting all users: ", e);
+        return res.sendStatus(500);
+    })
+}
+
+// function normalizeVietnamesePattern(keyword) {
+//     const normalizedKeyword = keyword.replace(/[áàảãạăắằẳẵặâấầẩẫậđéèẻẽẹêếềểễệíìỉĩịóòỏõọôốồổỗộơớờởỡợúùủũụưứừửữựýỳỷỹỵ]/g, function (match) {
+//         return `[${match}${match.toUpperCase()}]`;
+//     });
+//     return normalizedKeyword;
+// }
+
+module.exports = { handleNewRoom, handleGetRooms, handleDeleteRoom, handleGetAllUsers };

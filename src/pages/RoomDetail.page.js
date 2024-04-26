@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import * as AlertDialog from '@radix-ui/react-alert-dialog';
 import { Toaster, toast } from 'alert';
 import $ from 'jquery';
 import 'datatables.net-dt/js/dataTables.dataTables.min.js';
 import 'datatables.net-dt/css/dataTables.dataTables.min.css';
 import '../radix-ui.css';
 
+import CustomAlertDialog from '../components/AlertDialog.component';
 import useFirebase from '../hooks/useFirebase';
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
 import { ref, getDownloadURL } from "firebase/storage";
@@ -68,7 +68,7 @@ const RoomDetail = () => {
         );
     }).reverse();
 
-    const handleRoomUnregiser = async () => {
+    const handleRoomUnregister = async () => {
         axiosPrivate.post(`/home/roomUnregister`, { roomId: roomId })
             .then(() => {
                 toast(`You are no longer ${roomDetails.name}'s manager`);
@@ -105,32 +105,11 @@ const RoomDetail = () => {
                         </tbody>
                     </table>
                 </section>
-                <AlertDialog.Root>
-                    <AlertDialog.Trigger asChild>
-                        <button className='unsubcribe-btn' >Unregister as Manager</button>
-                    </AlertDialog.Trigger>
-                    <AlertDialog.Portal>
-                        <AlertDialog.Overlay className="AlertDialogOverlay" />
-                        <AlertDialog.Content className="AlertDialogContent">
-                            <AlertDialog.Title className="AlertDialogTitle">Are you absolutely sure?</AlertDialog.Title>
-                            <br></br>
-                            <AlertDialog.Description className="AlertDialogDescription">
-                                This action cannot be undone by yourself.
-                                <br></br>
-                                You will no longer be able to approve incoming entry
-                                requests as well as view entry list of this room.
-                            </AlertDialog.Description>
-                            <div style={{ display: 'flex', gap: 25, justifyContent: 'flex-end' }}>
-                                <AlertDialog.Cancel asChild>
-                                    <button className="Button mauve">Cancel</button>
-                                </AlertDialog.Cancel>
-                                <AlertDialog.Action asChild>
-                                    <button className="Button red" onClick={() => { handleRoomUnregiser() }}>Yes, confirm action</button>
-                                </AlertDialog.Action>
-                            </div>
-                        </AlertDialog.Content>
-                    </AlertDialog.Portal>
-                </AlertDialog.Root>
+                <CustomAlertDialog message={<>This action cannot be undone by yourself.
+                    <br></br>
+                    You will no longer be able to approve incoming entry
+                    requests as well as view entries list of this room.</>} handleClick={handleRoomUnregister}
+                    customSubmitBtn={<button className='unsubcribe-btn' >Unregister as Manager</button>}></CustomAlertDialog>
             </div>
             {/* toast for error msg */}
             <Toaster position='top-right' />

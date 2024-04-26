@@ -8,4 +8,8 @@ router.post('/newRoom', verifyRole("ADMIN"), adminController.handleNewRoom);
 
 router.delete('/room/:id', verifyRole("ADMIN"), adminController.handleDeleteRoom);
 
+// router.get('/findUsers', adminController.handleFindUsers);
+
+router.get('/allUsers', verifyRole("ADMIN"), adminController.handleGetAllUsers);
+
 module.exports = router;

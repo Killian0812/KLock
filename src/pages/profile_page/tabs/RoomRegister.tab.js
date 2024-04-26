@@ -2,10 +2,11 @@ import Tippy from '@tippyjs/react/headless';
 import { useEffect, useRef, useState } from 'react';
 import { FaSearch } from "react-icons/fa";
 import { RxCross2 } from "react-icons/rx";
-import * as AlertDialog from '@radix-ui/react-alert-dialog';
 import { Toaster, toast } from 'alert';
+import debounce from 'lodash.debounce';
 
 import '../../../radix-ui.css';
+import CustomAlertDialog from '../../../components/AlertDialog.component';
 import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
 
 function SelectedRoom({ room, handleClick }) {
@@ -57,6 +58,10 @@ function RoomRegisterTab() {
         });
     }, [keyword, axiosPrivate]);
 
+    const handleSearching = debounce((e) => {
+        setKeyword(e);
+    }, 300);
+
     const handleAddRoom = (room) => { // use .some() and _id because .includes() use reference comparison
         setSelectedRooms(prevRooms => prevRooms.some(currentRoom => currentRoom._id === room._id) ? prevRooms : [...prevRooms, room])
     }
@@ -70,6 +75,7 @@ function RoomRegisterTab() {
             .then(() => {
                 toast(`Request sent to Admin`);
                 setSelectedRooms([]);
+                setKeyword('');
             })
             .catch((err) => {
                 toast('Unexpected error');
@@ -99,9 +105,7 @@ function RoomRegisterTab() {
                         <input style={{
                             flex: 1, border: "none", borderRadius: "5px",
                             outline: "none", padding: "5px", backgroundColor: "#434343", color: "#fff"
-                        }} type='text' ref={searchRef} onChange={(e) => {
-                            setKeyword(e.target.value);
-                        }} placeholder='Search for room'></input>
+                        }} type='text' ref={searchRef} onChange={(e) => handleSearching(e.target.value)} placeholder='Search for room'></input>
                     </div>
                 </Tippy>
             </div>
@@ -118,29 +122,7 @@ function RoomRegisterTab() {
                     }
                 </div>
                 {
-                    selectedRooms.length > 0 && <AlertDialog.Root>
-                        <AlertDialog.Trigger asChild>
-                            <button style={{ width: "100px" }}>Submit</button>
-                        </AlertDialog.Trigger>
-                        <AlertDialog.Portal>
-                            <AlertDialog.Overlay className="AlertDialogOverlay" />
-                            <AlertDialog.Content className="AlertDialogContent">
-                                <AlertDialog.Title className="AlertDialogTitle">Are you absolutely sure?</AlertDialog.Title>
-                                <br></br>
-                                <AlertDialog.Description className="AlertDialogDescription">
-                                    You may want to contact Administrator for confirmation and approval to register as room manager.
-                                </AlertDialog.Description>
-                                <div style={{ display: 'flex', gap: 25, justifyContent: 'flex-end' }}>
-                                    <AlertDialog.Action asChild>
-                                        <button className="Button green" onClick={() => { handleSubmit() }}>Yes, confirm action</button>
-                                    </AlertDialog.Action>
-                                    <AlertDialog.Cancel asChild>
-                                        <button className="Button mauve">Cancel</button>
-                                    </AlertDialog.Cancel>
-                                </div>
-                            </AlertDialog.Content>
-                        </AlertDialog.Portal>
-                    </AlertDialog.Root>
+                    selectedRooms.length > 0 && <CustomAlertDialog message='You may want to contact Administrator for confirmation and approval to register as room manager.' handleClick={handleSubmit} positive ></CustomAlertDialog>
                 }
             </div>
             <Toaster position='top-right' />
