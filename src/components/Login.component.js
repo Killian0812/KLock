@@ -14,7 +14,12 @@ const Login = () => {
 
     const navigate = useNavigate();
     const location = useLocation();
-    const from = location.state?.from?.pathname || "/dashboard";
+
+    const from = (isAdmin) => {
+        if (isAdmin)
+            return '/admin/dashboard';
+        return location.state?.from?.pathname || '/';
+    }
 
     const usernameInputRef = useRef();
     const errRef = useRef();
@@ -59,7 +64,7 @@ const Login = () => {
             setUsername('');
             setPassword('');
             // setSuccess(true);
-            navigate(from, { replace: true });
+            navigate(from(roles.includes("ADMIN")), { replace: true });
         } catch (error) {
             if (!error?.response) {
                 setErrMsg('No Server Response');

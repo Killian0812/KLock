@@ -7,10 +7,10 @@ function NotificationItem({ props }) {
     // console.log(props);
 
     return (
-        <Link to="/dashboard" onClick={() => {
+        <Link to="/" onClick={() => {
             setNotifications([]);
             setVisible(false);
-            if (window.location.pathname !== "/dashboard")
+            if (window.location.pathname !== "/")
                 setNewRequests([]);
         }} className='notification-item'>You have new guest at {props.name}</Link>
     );

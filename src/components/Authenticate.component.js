@@ -7,7 +7,7 @@ const Authenticate = () => {
     const location = useLocation();
 
     return auth?.accessToken ? <Outlet></Outlet>
-        : <Navigate to="/" state={{ from: location }} replace></Navigate>
+        : <Navigate to="/login" state={{ from: location }} replace></Navigate>
 }
 
 export default Authenticate;

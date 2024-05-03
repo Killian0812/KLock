@@ -6,7 +6,10 @@ router.get('/allRoom', verifyRole("ADMIN"), adminController.handleGetRooms);
 
 router.post('/newRoom', verifyRole("ADMIN"), adminController.handleNewRoom);
 
-router.delete('/room/:id', verifyRole("ADMIN"), adminController.handleDeleteRoom);
+router.route('/room/:id', verifyRole("ADMIN"))
+    .get(verifyRole("ADMIN"), adminController.handleGetRoom)
+    .post(verifyRole("ADMIN"), adminController.handleEditRoom)
+    .delete(verifyRole("ADMIN"), adminController.handleDeleteRoom);
 
 // router.get('/findUsers', adminController.handleFindUsers);
 

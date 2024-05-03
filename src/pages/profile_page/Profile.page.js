@@ -10,7 +10,7 @@ export default function Profile() {
     const navigate = useNavigate();
 
     const handleTabChange = (tab) => {
-        navigate(`/dashboard/profile/${tab}`);
+        navigate(`/profile/${tab}`);
     };
 
     return (

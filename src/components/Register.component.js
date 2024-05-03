@@ -121,7 +121,7 @@ const Register = () => {
                     <section className="registerSection">
                         <p className="successmsg">Successfully Registered</p>
                         <p><br />
-                            <Link to="/"><button>Continue to Login</button></Link><br />
+                            <Link to="/login"><button>Continue to Login</button></Link><br />
                             <p></p>
                             <p style={{ marginTop: "70px" }}>Or</p>
                             <span>
@@ -201,7 +201,7 @@ const Register = () => {
                         </form>
                         <p>
                             Already registered?<br />
-                            <Link to="/">Sign In</Link>
+                            <Link to="/login">Sign In</Link>
                         </p>
                     </section>
                 )

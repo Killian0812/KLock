@@ -24,7 +24,7 @@ function App() {
     <main className="App">
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Login />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Register />} />
           <Route path="/unauthorized" element={<Unauthorized />} />
 
@@ -34,7 +34,7 @@ function App() {
             <Route element={<Authenticate />}>
 
               {/* chat user role - authenticate only */}
-              <Route path="/dashboard" element={<Layout />}>
+              <Route path="/" element={<Layout />}>
                 <Route index element={<Home />} />
                 <Route path="profile/:tab?" element={<Profile />} /> { /*Optional param*/}
                 <Route path="rooms" element={<Rooms />} />

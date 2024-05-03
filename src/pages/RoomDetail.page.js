@@ -72,7 +72,7 @@ const RoomDetail = () => {
         axiosPrivate.post(`/home/roomUnregister`, { roomId: roomId })
             .then(() => {
                 toast(`You are no longer ${roomDetails.name}'s manager`);
-                navigate("/dashboard/rooms", { replace: true });
+                navigate("/rooms", { replace: true });
             })
             .catch((err) => {
                 toast('Unexpected error');

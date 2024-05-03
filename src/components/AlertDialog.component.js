@@ -1,11 +1,11 @@
 import * as AlertDialog from '@radix-ui/react-alert-dialog';
 
-const CustomAlertDialog = ({ message, handleClick, positive, customSubmitBtn }) => {
+const CustomAlertDialog = ({ message, handleClick, positive, customSubmitBtn, buttonText }) => {
     return (
         <AlertDialog.Root>
             <AlertDialog.Trigger asChild>
                 {
-                    customSubmitBtn || <button style={{ width: "100px" }}>Submit</button>
+                    customSubmitBtn || <button style={{ width: "100px" }}>{buttonText || 'Submit'}</button>
                 }
             </AlertDialog.Trigger>
             <AlertDialog.Portal>

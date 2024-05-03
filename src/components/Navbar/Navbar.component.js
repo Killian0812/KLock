@@ -24,10 +24,10 @@ function Navbar() {
         const nav = NavbarData[i];
         navbarItems.push(
             <li key={i} className={nav.cName}>
-                <Link to={"/dashboard" + nav.path} onClick={() => {
+                <Link to={nav.path} onClick={() => {
                     if (nav.path !== '')
                         return;
-                    if (window.location.pathname !== "/dashboard")
+                    if (window.location.pathname !== "/")
                         setNewRequests([]);
                 }}>
                     {nav.icon}
@@ -78,7 +78,7 @@ function Navbar() {
                     <NotificationButton></NotificationButton>
 
                     <div className='nav-text' style={{ position: "absolute", marginLeft: "83%" }}>
-                        <Link to="/admin/dashboard" style={{width: '200px'}}>
+                        <Link to="/admin/dashboard" style={{ width: '200px' }}>
                             <MdAdminPanelSettings style={{ paddingBottom: "10px" }} />
                             <span>Admin Page</span>
                         </Link>
