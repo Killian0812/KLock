@@ -135,6 +135,22 @@ async function handleGetRoom(req, res) {
     }
 }
 
+async function handleBlockOrUnblockUser(req, res) {
+    try {
+        const userId = req.params.userId;
+
+        // Update user's blocked status in the database
+        const user = await User.findById(userId);
+        user.active = 1 - user.active;
+        await user.save();
+
+        res.status(200).json({ message: 'User status updated successfully' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+}
+
 // async function handleFindUsers(req, res) {
 //     const keyword = req.query.keyword;
 //     const users = await User.find({ "fullname": { $regex: normalizeVietnamesePattern(keyword), $options: 'i' } });
@@ -157,4 +173,4 @@ async function handleGetAllUsers(req, res) {
 //     return normalizedKeyword;
 // }
 
-module.exports = { handleNewRoom, handleGetRooms, handleDeleteRoom, handleGetAllUsers, handleGetRoom, handleEditRoom };
+module.exports = { handleNewRoom, handleGetRooms, handleDeleteRoom, handleGetAllUsers, handleGetRoom, handleEditRoom, handleBlockOrUnblockUser };

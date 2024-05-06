@@ -26,6 +26,7 @@ connection.once('open', () => {
 
 // custom middlewares
 const verifyJWT = require('./middlewares/verifyJWT');
+const verifyActive = require('./middlewares/verifyActive');
 
 // routing
 const registerRouter = require('./routes/register.router');
@@ -42,7 +43,7 @@ app.use('/refresh', refreshTokenRouter);
 app.use('/logout', logoutRouter);
 
 // only exec authorization before accessing /home or /admin
-app.use('/home', verifyJWT, homeRouter);
+app.use('/home', verifyJWT, verifyActive, homeRouter);
 app.use('/admin', verifyJWT, adminRouter);
 
 app.use('/guest', guestRouter);

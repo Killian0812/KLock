@@ -74,6 +74,8 @@ const Login = () => {
                 setErrMsg(error.response.data);
             } else if (error.response?.status === 401) {
                 setErrMsg('Unauthorized');
+            } else if (error.response?.status === 403) {
+                setErrMsg('Your account is blocked');
             } else {
                 setErrMsg('Login Failed')
             }

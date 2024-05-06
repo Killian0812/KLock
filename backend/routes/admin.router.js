@@ -7,12 +7,14 @@ router.get('/allRoom', verifyRole("ADMIN"), adminController.handleGetRooms);
 router.post('/newRoom', verifyRole("ADMIN"), adminController.handleNewRoom);
 
 router.route('/room/:id', verifyRole("ADMIN"))
-    .get(verifyRole("ADMIN"), adminController.handleGetRoom)
-    .post(verifyRole("ADMIN"), adminController.handleEditRoom)
-    .delete(verifyRole("ADMIN"), adminController.handleDeleteRoom);
+    .get(adminController.handleGetRoom)
+    .post(adminController.handleEditRoom)
+    .delete(adminController.handleDeleteRoom);
 
 // router.get('/findUsers', adminController.handleFindUsers);
 
 router.get('/allUsers', verifyRole("ADMIN"), adminController.handleGetAllUsers);
+
+router.put('/blockOrUnblock/:userId', verifyRole("ADMIN"), adminController.handleBlockOrUnblockUser)
 
 module.exports = router;

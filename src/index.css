@@ -199,8 +199,9 @@ label>svg {
 .contentSection {
   margin-bottom: 200px;
   border-radius: 20px;
-  width: 50%;
-  max-width: 50vw;
+  /* width: 70%; */
+  min-width: 50%;
+  max-width: 70vw;
   min-height: 400px;
   display: flex;
   flex-direction: column;

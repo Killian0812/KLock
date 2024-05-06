@@ -33,7 +33,7 @@ function App() {
             {/* login required routes */}
             <Route element={<Authenticate />}>
 
-              {/* chat user role - authenticate only */}
+              {/* user role - authenticate only */}
               <Route path="/" element={<Layout />}>
                 <Route index element={<Home />} />
                 <Route path="profile/:tab?" element={<Profile />} /> { /*Optional param*/}
@@ -41,16 +41,19 @@ function App() {
                 <Route path="rooms/:roomId" element={<RoomDetail />} />
               </Route>
 
-              {/* chat admin role - need authorization */}
+              {/* admin role - need authorization */}
 
-              <Route element={<Authorize allowedRoles={["ADMIN"]} />}>
+              <Route element={<Authorize allowedRoles={["ADMIN"]} />}> { /*Protected route*/}
 
-                <Route path='/admin' element={<AdminLayout />}> { /*Protected route*/}
+                <Route path='/admin' element={<AdminLayout />}>
                   <Route path='dashboard' element={<Dashboard />} />
-                  <Route path='accounts' element={<Accounts />} />
+
                   <Route path='building' element={<Building />} />
                   <Route path="add-room" element={<AddRoom />} />
                   <Route path="edit-room/:roomId" element={<EditRoom />} />
+
+                  <Route path='accounts' element={<Accounts />} />
+
                 </Route>
 
               </Route>
@@ -58,7 +61,7 @@ function App() {
             </Route>
 
           </Route>
-          
+
         </Routes>
       </BrowserRouter>
     </main >

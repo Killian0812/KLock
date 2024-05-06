@@ -16,7 +16,8 @@
       {
         "ignore": [
           "inset",
-          "width: fit-content"
+          "width: fit-content",
+          "-webkit-tap-highlight-color"
         ]
       }
     ]
