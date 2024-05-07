@@ -2,6 +2,24 @@ var User = require('../models/user.model');
 var Room = require('../models/room.model');
 var Entry = require('../models/entry.model');
 
+async function handleGetDashboardInfo(req, res) {
+    console.log("Admin at dashboard");
+
+    try {
+        const [totalEntries, totalGuests, totalRooms, totalUsers] = await Promise.all([
+            Entry.countDocuments({}),
+            Entry.countDocuments({ name: 'Guest' }),
+            Room.countDocuments({}),
+            User.countDocuments({}),
+        ]);
+        return res.status(200).json({ totalEntries, totalGuests, totalRooms, totalUsers });
+    } catch (error) {
+        console.log(error);
+        return res.sendStatus(500);
+    }
+}
+
+
 async function handleGetRooms(req, res) {
     console.log("Admin fetching rooms");
     const rooms = await Room.find({});
@@ -173,4 +191,4 @@ async function handleGetAllUsers(req, res) {
 //     return normalizedKeyword;
 // }
 
-module.exports = { handleNewRoom, handleGetRooms, handleDeleteRoom, handleGetAllUsers, handleGetRoom, handleEditRoom, handleBlockOrUnblockUser };
+module.exports = { handleNewRoom, handleGetRooms, handleDeleteRoom, handleGetAllUsers, handleGetRoom, handleEditRoom, handleBlockOrUnblockUser, handleGetDashboardInfo };

@@ -38,7 +38,7 @@ const PersistLogin = () => {
             so if the device is not trusted => go straight to Authenticate component,
             if refresh => clear auth => authenticate fail => navigate back to login */}
             {!trusted ? <Outlet></Outlet>
-                : isLoading ? <p>Loading...</p>
+                : isLoading ? <></>
                     : <Outlet></Outlet>
             }
         </>

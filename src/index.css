@@ -438,3 +438,19 @@ th:hover {
   border-radius: 4px;
   color: rgb(0, 0, 0);
 }
+
+.dashboard-nav {
+  flex: 1;
+  background-color: rgba(0, 0, 0, 0.4);
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+.dashboard-nav:hover {
+  background-color: rgba(0, 0, 0, 0.6);
+}

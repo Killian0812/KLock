@@ -27,7 +27,7 @@ export default function Admin() {
             <section className="contentSection">
                 <h1>Your rooms</h1><hr></hr>
                 <div className="roomsList">
-                    {loading ? <p style={{ color: "white" }}><br></br>Loading...</p> :
+                    {loading ? <></> :
                         rooms.length <= 0 ?
                             <p style={{ color: "white" }}><br></br>No room available</p> :
                             <>

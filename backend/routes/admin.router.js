@@ -17,4 +17,6 @@ router.get('/allUsers', verifyRole("ADMIN"), adminController.handleGetAllUsers);
 
 router.put('/blockOrUnblock/:userId', verifyRole("ADMIN"), adminController.handleBlockOrUnblockUser)
 
+router.get('/dashboardInfo', adminController.handleGetDashboardInfo);
+
 module.exports = router;
