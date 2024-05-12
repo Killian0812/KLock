@@ -100,8 +100,11 @@ const Login = () => {
                     <button disabled={(!username || !password) ? true : false}>Sign In</button>
 
                     <div className='trustedCheck'>
-                        <input type='checkbox' id='trusted' onChange={toggleTrusted} checked={trusted}></input>
-                        <label htmlFor='trusted'>Trust this device</label>
+                        <div>
+                            <input type='checkbox' id='trusted' onChange={toggleTrusted} checked={trusted}></input>
+                            <label htmlFor='trusted'>Trust this device</label>
+                        </div>
+                        <Link to="/forget">Forget password</Link>
                     </div>
                 </form>
                 <p>

@@ -151,7 +151,7 @@ const Register = () => {
 
                             <label htmlFor="email">Email:
                                 <FontAwesomeIcon icon={faCheck} className={validEmail ? "valid" : "hide"} />
-                                <FontAwesomeIcon icon={faTimes} className={validEmail || !username ? "hide" : "invalid"} />
+                                <FontAwesomeIcon icon={faTimes} className={validEmail || !email ? "hide" : "invalid"} />
                             </label>
                             <input type="text" id="email"
                                 onChange={(e) => setEmail(e.target.value)} value={email} required

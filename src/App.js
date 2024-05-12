@@ -2,6 +2,8 @@ import './App.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Register from './components/Register.component';
 import Login from './components/Login.component';
+import Forget from './components/Forget.component';
+import ResetPassword from './components/ResetPassword.component';
 import Layout from './components/Layout.component';
 import Authenticate from './components/Authenticate.component';
 import Authorize from './components/Authorize.component';
@@ -26,6 +28,8 @@ function App() {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Register />} />
+          <Route path="/forget" element={<Forget />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/unauthorized" element={<Unauthorized />} />
 
           <Route element={<PersistLogin />}>

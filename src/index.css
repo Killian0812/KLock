@@ -160,7 +160,7 @@ label>svg {
   font-size: 0.75rem;
   margin-top: 10px;
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
   align-items: flex-end;
 }
 
