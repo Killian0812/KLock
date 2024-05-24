@@ -42,7 +42,7 @@ const Accounts = () => {
 
   useEffect(() => { // fetch data
     async function fetchUsers() {
-      const res = await axiosPrivate.get(`/admin/allUsers`);
+      const res = await axiosPrivate.get(`/api/admin/allUsers`);
       const usersList = res.data.filter(user => !user.roles.includes("ADMIN"));
       setUsers(usersList);
     }
@@ -50,7 +50,7 @@ const Accounts = () => {
   }, [axiosPrivate]);
 
   function handleChangeUserStatus(id) {
-    axiosPrivate.put(`/admin/blockOrUnblock/${id}`)
+    axiosPrivate.put(`/api/admin/blockOrUnblock/${id}`)
       .then(() => {
         const userIndex = users.findIndex(user => user._id === id);
         if (userIndex !== -1) {

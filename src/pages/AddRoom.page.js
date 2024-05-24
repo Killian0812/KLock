@@ -48,7 +48,7 @@ export default function AddRoom() {
             setVisible(true);
             return;
         }
-        axiosPrivate.get('/admin/allUsers/').then(response => {
+        axiosPrivate.get('/api/admin/allUsers/').then(response => {
             setUsers(response.data);
             console.log(response.data);
         }).catch(error => {
@@ -92,7 +92,7 @@ export default function AddRoom() {
     }
 
     const handleSubmit = () => {
-        axiosPrivate.post(`/admin/newRoom`, {
+        axiosPrivate.post(`/api/admin/newRoom`, {
             name: name,
             mac: mac,
             managers: managers

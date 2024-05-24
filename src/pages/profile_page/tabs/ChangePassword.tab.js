@@ -24,7 +24,7 @@ function ChangePasswordTab() {
         const v2 = newPassword === matchPassword;
 
         if (v1 && v2) {
-            axiosPrivate.post("/home/changePassword", { currentPassword, newPassword })
+            axiosPrivate.post("/api/home/changePassword", { currentPassword, newPassword })
                 .then(() => {
                     setStatus("success");
                     setCurrentPassword('');

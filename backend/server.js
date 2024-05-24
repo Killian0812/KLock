@@ -8,7 +8,6 @@ require('dotenv').config();
 
 const { app, server } = require('./socket');
 
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use(cors());
 
 // middlewares
@@ -37,16 +36,30 @@ const refreshTokenRouter = require('./routes/refreshToken.router');
 const adminRouter = require('./routes/admin.router');
 const guestRouter = require('./routes/guest.router');
 
-app.use('/register', registerRouter);
-app.use('/login', loginRouter);
-app.use('/refresh', refreshTokenRouter);
-app.use('/logout', logoutRouter);
+app.use('/api/register', registerRouter);
+app.use('/api/login', loginRouter);
+app.use('/api/refresh', refreshTokenRouter);
+app.use('/api/logout', logoutRouter);
 
 // only exec authorization before accessing /home or /admin
-app.use('/home', verifyJWT, verifyActive, homeRouter);
-app.use('/admin', verifyJWT, adminRouter);
+app.use('/api/home', verifyJWT, verifyActive, homeRouter);
+app.use('/api/admin', verifyJWT, adminRouter);
 
-app.use('/guest', guestRouter);
+app.use('/api/guest', guestRouter);
+
+const buildPath = path.resolve(__dirname, '../build');
+app.use(express.static(buildPath));
+
+app.get(/^\/(?!api).*/, function (req, res) {
+    res.sendFile(
+        path.join(buildPath, 'index.html'),
+        function (err) {
+            if (err) {
+                res.status(500).send(err);
+            }
+        }
+    );
+});
 
 // server host
 const port = process.env.PORT;

@@ -5,7 +5,7 @@ import axios from 'axios';
 // import AuthContext from '../context/AuthProvider';
 import useAuth from '../hooks/useAuth';
 
-const LOGIN_URL = "/login";
+const LOGIN_URL = "/api/login";
 
 const Login = () => {
 

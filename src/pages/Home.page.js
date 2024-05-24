@@ -11,7 +11,7 @@ function PendingRequest({ data, onRequestApproval }) {
 
     async function handleClick(status) {
         // send request to server
-        await axiosPrivate.post("/home/approveEntry", {
+        await axiosPrivate.post("/api/home/approveEntry", {
             id: data._id,
             MAC: data.room.mac,
             image: data.image,
@@ -71,7 +71,7 @@ function NewRequest({ data, onRequestApproval }) {
     async function handleClick(status) {
         // send request to server
 
-        await axiosPrivate.post("/home/approveEntry", {
+        await axiosPrivate.post("/api/home/approveEntry", {
             id: data.id,
             MAC: data.room.mac,
             image: data.filename,
@@ -130,7 +130,7 @@ export default function Home() {
 
     useEffect(() => {
         // fetch all pending requests from database
-        axiosPrivate.get(`/home/pendingRequests`).then((res) => {
+        axiosPrivate.get(`/api/home/pendingRequests`).then((res) => {
             if (res.data)
                 setPendingRequests(res.data);
         })

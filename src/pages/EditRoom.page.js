@@ -46,7 +46,7 @@ export default function EditRoom() {
     }, [mac]);
 
     useEffect(() => {
-        axiosPrivate.get('/admin/allUsers/').then(res => {
+        axiosPrivate.get('/api/admin/allUsers/').then(res => {
             setUsers(res.data);
         }).catch(error => {
             console.error('Error fetching users:', error);
@@ -55,7 +55,7 @@ export default function EditRoom() {
     }, [roomId, axiosPrivate]);
 
     useEffect(() => {
-        axiosPrivate.get(`/admin/room/${roomId}`).then(res => {
+        axiosPrivate.get(`/api/admin/room/${roomId}`).then(res => {
             setName(res.data.name);
             setMac(res.data.mac);
             setManagers(users.filter(currentUser => res.data.managers.includes(currentUser._id)));
@@ -101,7 +101,7 @@ export default function EditRoom() {
     }
 
     const handleSubmit = () => {
-        axiosPrivate.post(`/admin/room/${roomId}`, {
+        axiosPrivate.post(`/api/admin/room/${roomId}`, {
             name: name,
             mac: mac,
             managers: managers

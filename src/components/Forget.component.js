@@ -37,7 +37,7 @@ const Forget = () => {
             return;
         }
         try {
-            await axios.post('/login/forget', { email });
+            await axios.post('/api/login/forget', { email });
             setLoading(false);
             setSuccess(true);
             setEmail('');

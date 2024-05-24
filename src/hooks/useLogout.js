@@ -14,7 +14,7 @@ const useLogout = () => {
             setSocket(null);
         }
         try {
-            await axios('/logout', {
+            await axios('/api/logout', {
                 withCredentials: true
             });
         } catch (err) {

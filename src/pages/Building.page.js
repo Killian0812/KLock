@@ -13,14 +13,14 @@ const Building = () => {
 
   useEffect(() => { // fetch data
     async function fetchRooms() {
-      const res = await axiosPrivate.get(`/admin/allRoom`);
+      const res = await axiosPrivate.get(`/api/admin/allRoom`);
       setRooms(res.data);
     }
     fetchRooms();
   }, [axiosPrivate]);
 
   const removeRoom = (roomId) => {
-    axiosPrivate.delete(`/admin/room/${roomId}`).then(() => {
+    axiosPrivate.delete(`/api/admin/room/${roomId}`).then(() => {
       setRooms(prevRooms => prevRooms.filter(room => room._id !== roomId));
       $('#rooms').DataTable().destroy(false); // need destroy DataTable before re-render because of state changes
     }).catch((err) => {

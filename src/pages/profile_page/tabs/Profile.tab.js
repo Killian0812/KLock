@@ -38,7 +38,7 @@ function ProfileTab() {
         // console.log(`Email test ${v1}, Name test ${v2}`);
         setFullname(trimmedFullname);
         if (v1 && v2) {
-            axiosPrivate.post("/home/updateUserInfo", { fullname, email })
+            axiosPrivate.post("/api/home/updateUserInfo", { fullname, email })
                 .then(() => {
                     setStatus("success");
                     setAuth({ ...auth, fullname: fullname, email: email });

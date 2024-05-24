@@ -15,7 +15,7 @@ const ResetPassword = () => {
     const [username, setUsername] = useState('');
 
     const [tokenVerified, setTokenVerified] = useState(true);
-    axios.post('/login/verify-token', { token }).then(res => {
+    axios.post('/api/login/verify-token', { token }).then(res => {
         setUsername(res.data.username);
     }).catch(err => {
         setTokenVerified(false);
@@ -56,7 +56,7 @@ const ResetPassword = () => {
             return;
         }
         try {
-            await axios.post('/login/reset-password', { username, password });
+            await axios.post('/api/login/reset-password', { username, password });
             setLoading(false);
             setSuccess(true);
             setPassword('');

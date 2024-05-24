@@ -11,7 +11,7 @@ export default function Admin() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        axiosPrivate.get(`/home/rooms`).then((res) => {
+        axiosPrivate.get(`/api/home/rooms`).then((res) => {
             console.log(res.data);
             setRooms(res.data);
             setLoading(false);

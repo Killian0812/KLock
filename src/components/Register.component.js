@@ -7,7 +7,7 @@ import axios from 'axios';
 const USERNAME_REGEX = /^[a-zA-Z0-9-_]{3,21}$/;
 const EMAIL_REGEX = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
 const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d@$!%*?&/~._-]{6,24}$/;
-const REGISTER_URL = '/register';
+const REGISTER_URL = '/api/register';
 
 const Register = () => {
     // focus on username input in first render

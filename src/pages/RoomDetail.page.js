@@ -47,9 +47,9 @@ const RoomDetail = () => {
 
     useEffect(() => { // fetch data
         async function fetchRoomData() {
-            const res = await axiosPrivate.get(`/home/roomDetails?id=${roomId}`);
+            const res = await axiosPrivate.get(`/api/home/roomDetails?id=${roomId}`);
             setRoomDetails(res.data);
-            axiosPrivate.get(`/home/roomEntries?mac=${res.data.mac}`).then((res2) => {
+            axiosPrivate.get(`/api/home/roomEntries?mac=${res.data.mac}`).then((res2) => {
                 setRoomEntries(res2.data);
             });
         } // merge 2 fetch later
@@ -69,7 +69,7 @@ const RoomDetail = () => {
     }).reverse();
 
     const handleRoomUnregister = async () => {
-        axiosPrivate.post(`/home/roomUnregister`, { roomId: roomId })
+        axiosPrivate.post(`/api/home/roomUnregister`, { roomId: roomId })
             .then(() => {
                 toast(`You are no longer ${roomDetails.name}'s manager`);
                 navigate("/rooms", { replace: true });

@@ -23,7 +23,7 @@ const Dashboard = () => {
   useEffect(() => {
     async function fetchData() {
       try {
-        const res = await axiosPrivate.get('/admin/dashboardInfo');
+        const res = await axiosPrivate.get('/api/admin/dashboardInfo');
         setData([...Object.values(res.data)]);
       } catch (error) {
         console.log(error);

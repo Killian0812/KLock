@@ -45,7 +45,7 @@ function RoomRegisterTab() {
             setRooms([]);
             return;
         }
-        axiosPrivate.get('/home/findRooms/', {
+        axiosPrivate.get('/api/home/findRooms/', {
             params: {
                 keyword: keyword
             }
@@ -71,7 +71,7 @@ function RoomRegisterTab() {
     }
 
     const handleSubmit = () => {
-        axiosPrivate.post(`/home/roomRegister`, selectedRooms)
+        axiosPrivate.post(`/api/home/roomRegister`, selectedRooms)
             .then(() => {
                 toast(`Request sent to Admin`);
                 setSelectedRooms([]);
