@@ -37,7 +37,10 @@ const handleRefreshToken = async (req, res) => {
             if (err)
                 return res.status(403).send("Token expired");
             else if (existingUser.username !== decoded.username)
-                return res.status(401).send("Invalid refresh token");
+                {
+                    console.log("Username not match");
+                    return res.status(401).send("Invalid refresh token");
+                }
 
             const username = existingUser.username;
             const fullname = existingUser.fullname;

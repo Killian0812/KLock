@@ -10,7 +10,7 @@ export const SocketProvider = ({ children }) => {
 
     useEffect(() => {
         if (auth?.username) {
-            const newSocket = io("http://54.252.239.137:8080", {
+            const newSocket = io("http://13.237.151.178", {
                 query: {
                     username: auth.username,
                 },
