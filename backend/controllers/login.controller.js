@@ -165,7 +165,7 @@ const handleForget = async (req, res) => {
         const token = JWT.sign({ email, username: user.username }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1h' });
 
         // Construct the reset password URL with the token
-        const resetPasswordUrl = `http://13.237.151.178/reset-password?token=${token}`;
+        const resetPasswordUrl = `http://ngcuong0812.id.vn/reset-password?token=${token}`;
 
         // Send email containing the reset password link
         await sendResetPasswordEmail(email, resetPasswordUrl);
